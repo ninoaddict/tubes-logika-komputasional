@@ -39,13 +39,35 @@ territoryContinent(australia, au1).
 territoryContinent(australia, au2).
 
 /* slang territory name */
-territoryName(na,north_america).
-territoryName(e,europe).
-territoryName(a,asia).
-territoryName(sa,south_america).
-territoryName(af,africa).
-territoryName(au,australia).
+territoryName(na1,north_america).
+territoryName(na2,north_america).
+territoryName(na3,north_america).
+territoryName(na4,north_america).
+territoryName(na5,north_america).
 
+territoryName(e1,europe).
+territoryName(e2,europe).
+territoryName(e3,europe).
+territoryName(e4,europe).
+territoryName(e5,europe).
+
+territoryName(a1,asia).
+territoryName(a2,asia).
+territoryName(a3,asia).
+territoryName(a4,asia).
+territoryName(a5,asia).
+territoryName(a6,asia).
+territoryName(a7,asia).
+
+territoryName(sa1,south_america).
+territoryName(sa2,south_america).
+
+territoryName(af1,africa).
+territoryName(af2,africa).
+territoryName(af3,africa).
+
+territoryName(au1,australia).
+territoryName(au2,australia).
 /* Adjacent Territory*/
 adjacent(as1, as4).
 adjacent(as1, eu2).
