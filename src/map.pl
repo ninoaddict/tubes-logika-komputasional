@@ -73,6 +73,7 @@ adjacent(as7, as6).
 adjacent(au1, as6).
 adjacent(au1, au2).
 adjacent(au2, sa2).
+adjacent(au2, au1).
 adjacent(eu1, eu2).
 adjacent(eu1, eu3).
 adjacent(eu1, na5).
@@ -81,7 +82,7 @@ adjacent(eu2, eu1).
 adjacent(eu2, eu4).
 adjacent(eu3, af1).
 adjacent(eu3, eu4).
-adjacent(su3, eu1).
+adjacent(eu3, eu1).
 adjacent(eu4, eu2).
 adjacent(eu4, eu3).
 adjacent(eu4, eu5).
