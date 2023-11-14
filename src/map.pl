@@ -38,6 +38,13 @@ territoryContinent(africa, af3).
 territoryContinent(australia, au1).
 territoryContinent(australia, au2).
 
+/* slang territory name */
+territoryName(na,north_america).
+territoryName(e,europe).
+territoryName(a,asia).
+territoryName(sa,south_america)
+territoryName(af,africa).
+territoryName(au,australia).
 /* Adjacent Territory*/
 adjacent(as1, eu2)
 adjacent(as1, as4)
