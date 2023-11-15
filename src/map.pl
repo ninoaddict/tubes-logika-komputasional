@@ -45,6 +45,7 @@ territoryName(a,asia).
 territoryName(sa,south_america)
 territoryName(af,africa).
 territoryName(au,australia).
+
 /* Adjacent Territory*/
 adjacent(as1, eu2)
 adjacent(as1, as4)
