@@ -7,12 +7,12 @@ startGame :-
     retractall(traversal(_)),
     retractall(listName(_)),
     repeat,
-    write(' Masukkan jumlah pemain: '),
+    write('Masukkan jumlah pemain: '),
     read(NBPlayer),
     (validNBPlayer(NBPlayer) ->
         !
     ; 
-        write(' Mohon masukkan angka antara 2 - 4.\n'),
+        write('Mohon masukkan angka antara 2 - 4.\n'),
         fail
     ),
     assertz(nbPlayer(NBPlayer)),
