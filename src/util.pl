@@ -11,3 +11,26 @@ roll2Dices(X):-
 integerToString(X, Y) :- X < 10, number_codes(X, Codes), atom_codes(String, Codes), atom_concat('00', String, Y), !.
 integerToString(X, Y) :- X < 100, number_codes(X, Codes), atom_codes(String, Codes), atom_concat('0', String, Y), !.
 integerToString(X, Y) :- Y is X,!. 
+
+/* return Player name from input (check-check purpose) */
+checkInputPlayer(X , Name):-
+    nbPlayer(Count),nl,
+    (((X = 'p1') , Count >= 1) ->
+        findall(Player,turnPlayer(Player,1), PlayerName),
+        write('Player P1')
+    ;   (((X = 'p2') , Count >= 2) ->
+            findall(Player,turnPlayer(Player,2), PlayerName),
+            write('Player P2')
+        ;   (((X = 'p3') , Count >= 3) ->
+                findall(Player, turnPlayer(Player,3), PlayerName),
+                write('Player P3')
+            ;   (((X = 'p4'), Count = 4) ->
+                    findall(Player, turnPlayer(Player,4), PlayerName),
+                    write('Player P4')
+                ;
+                    format('Masukkan input yang valid! (p1 - p~w)', Count), nl, fail
+                )
+            )
+        )
+    ),nl,nl,
+    getHeadList(PlayerName,Name).

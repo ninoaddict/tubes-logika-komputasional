@@ -86,40 +86,16 @@ bonusSoldierFromTerritory(Owner,Bonus):-
     ;   Bonus is (Count - 1)/ 2
     ),!.
 
+/* return Player name from input */
+
 /* check Player Detail */
-/* asumsi: turnPlayer(berto,1) , turnPlayer(matthew,2), turnPlayer(adril,3)
-         : nbPlayer tidak berkurang
-*/
 checkPlayerDetail(X):-
-    nbPlayer(Count),nl,
-    (((X = 'p1') , Count >= 1) ->
-        findall(Player,turnPlayer(Player,1), PlayerName),
-        write('Player P1')
-    ;   (((X = 'p2') , Count >= 2) ->
-            findall(Player,turnPlayer(Player,2), PlayerName),
-            write('Player P2')
-        ;   (((X = 'p3') , Count >= 3) ->
-                findall(Player, turnPlayer(Player,3), PlayerName),
-                write('Player P3')
-            ;   (((X = 'p4'), Count = 4) ->
-                    findall(Player, turnPlayer(Player,4), PlayerName),
-                    write('Player P4')
-                ;
-                    format('Masukkan input yang valid! (p1 - p~w)', Count), nl, fail
-                )
-            )
-        )
-    ),nl,nl,
-
-    getHeadList(PlayerName,Elmt),
-
-    allOwnedContinent(Elmt,Continents), 
-    countOwnedTerritories(Elmt, TerritoryOwn),
-    countPlacedSoldier(Elmt,NbPlacedSoldier),
-    unplacedSoldier(Elmt,NbUnplacedSoldier),
-    
-    write('Nama                   : '),write(Elmt),nl,
-
+    checkInputPlayer(X, Name),
+    allOwnedContinent(Name,Continents), 
+    countOwnedTerritories(Name, TerritoryOwn),
+    countPlacedSoldier(Name,NbPlacedSoldier),
+    unplacedSoldier(Name,NbUnplacedSoldier),
+    write('Nama                   : '),write(Name),nl,
     length(Continents, NbContinents),
     (NbContinents = 0 ->
         write('Benua                  : Tidak ada'),nl
@@ -131,7 +107,7 @@ checkPlayerDetail(X):-
 
 
 /* check Player Teritories */
-checkPlayerTeritories :-
+checkPlayerTeritories(X):-
     nbPlayer(Count),
     ((X = p1 ; X = P1) , Count >= 1 ->
         findall(Player,turnPlayer(Player,1), PlayerName),
@@ -153,4 +129,10 @@ checkPlayerTeritories :-
                 ) 
             )
         )
-    ),nl,nl,
+    ),nl,nl.
+
+/* check Incoming Troops Detail*/
+checkIncomingTroops(X):-
+    checkInputPlayer(X, Name),
+    count
+
