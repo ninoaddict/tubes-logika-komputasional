@@ -91,34 +91,40 @@ bonusSoldierFromTerritory(Owner,Bonus):-
          : nbPlayer tidak berkurang
 */
 checkPlayerDetail(X):-
-    nbPlayer(Count),
-    ((X = p1 ; X = P1) , Count >= 1 ->
+    nbPlayer(Count),nl,
+    (((X = 'p1') , Count >= 1) ->
         findall(Player,turnPlayer(Player,1), PlayerName),
         write('Player P1')
-    ; 
-        ((X = p2 ; X = P2) , Count >= 2 ->
+    ;   (((X = 'p2') , Count >= 2) ->
             findall(Player,turnPlayer(Player,2), PlayerName),
             write('Player P2')
-        ;   
-            ((X = p3; X = P3) , Count >= 3 ->
+        ;   (((X = 'p3') , Count >= 3) ->
                 findall(Player, turnPlayer(Player,3), PlayerName),
                 write('Player P3')
-            ;
-                ((X = p4; X = P4), Count = 4 ->
-                    findall(Player, turnPlayer(Player,4), PlayerName)
+            ;   (((X = 'p4'), Count = 4) ->
+                    findall(Player, turnPlayer(Player,4), PlayerName),
                     write('Player P4')
                 ;
-                    format('Masukkan input yang valid! (p1 - p~w)', Count), nl, !.
-                ) 
+                    format('Masukkan input yang valid! (p1 - p~w)', Count), nl, fail
+                )
             )
         )
     ),nl,nl,
-    allOwnedContinent(PlayerName,Continents), 
-    countOwnedTerritories(PlayerName, TerritoryOwn),
-    countPlacedSoldier(PlayerName,NbPlacedSoldier),
-    unplacedSoldier(PlayerName,NbUnplacedSoldier),
-    write('Nama                   : '),write(PlayerName),nl,
-    write('Benua                  : '),writeList(Continents),nl,
+
+    getHeadList(PlayerName,Elmt),
+
+    allOwnedContinent(Elmt,Continents), 
+    countOwnedTerritories(Elmt, TerritoryOwn),
+    countPlacedSoldier(Elmt,NbPlacedSoldier),
+    unplacedSoldier(Elmt,NbUnplacedSoldier),
+    
+    write('Nama                   : '),write(Elmt),nl,
+
+    length(Continents, NbContinents),
+    (NbContinents = 0 ->
+        write('Benua                  : Tidak ada'),nl
+    ;   write('Benua                  : '),writeList(Continents),nl
+    ),
     write('Total Wilayah          : '),write(TerritoryOwn),nl,
     write('Total Tentara Aktif    : '),write(NbPlacedSoldier),nl,
     write('Total Tentara Tambahan : '),write(NbUnplacedSoldier),nl.

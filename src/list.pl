@@ -104,7 +104,7 @@ sumUntil([X|Y], IndexUntil, Res) :- IndexNext is IndexUntil - 1, sumUntil(Y, Ind
 
 /* write List without bracket -> ex : elmt1, elmt2, ... elmt*/
 writeList([Head|[]]):-
-    write(Head),nl.
+    write(Head).
 writeList([Head|Tail]):-
     write(Head),
     write(', '),
@@ -114,9 +114,12 @@ writeList([Head|Tail]):-
 listLength([], X) :- X is 0, !.
 listLength([H|T], X) :- listLength(T, X1), X is X1 + 1, !.
 
-
 /* Return the Idx-th element of the list*/
 getElementString([], _, _) :- fail.
 getElementString([A|B], Idx, ELmt) :- 
     (Idx =:= 1, ELmt = A, !);
     (Idx =\= 1, Idx1 is Idx -1, getElementString(B, Idx1, ELmt)).
+
+/* Return head of the list if list only one element (important for checkPlayerDetail)  */
+getHeadList([A|[]], Result):-
+    Result = A.
