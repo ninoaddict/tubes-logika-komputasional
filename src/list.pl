@@ -5,7 +5,10 @@ insertFirst([], X, [X]).
 insertFirst(OldList, X, NewList) :-
     NewList = [X | OldList].
 
-deleteAt([_ | T], 0, T).
+addEnd([], X, [X]):- !.
+addEnd([A|B], C, [A|D]) :- addEnd(B,C,D).
+
+deleteAt([_ | T], 1, T):- !.
 deleteAt([H | T], Index, List) :-
     I is Index - 1,
     deleteAt(T, I, A),
@@ -50,6 +53,13 @@ isElmt([_ | T], Elmt, Answer) :-
 
 isUnique([]):-!.
 isUnique([A|B]):- \+getIndex(B, A, _), isUnique(B).
+
+isMaxValid(X):-
+    max(X, Max),
+    getIndex(X, Max, Index),
+    deleteAt(X, Index, Res),
+    max(Res, Imax),
+    Max =\= Imax, !.
 
 setElement([_|B], 1, Num, [Num|B]):- !.
 setElement([A|B], Index, Num, [A|C]) :- Index > 1, Indexx is Index-1, setElement(B,Indexx, Num, C).
