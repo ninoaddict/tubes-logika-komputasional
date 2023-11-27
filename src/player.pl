@@ -1,7 +1,8 @@
 /* DYNAMIC VARIABLE */
-:- dynamic(nbPlayer/1).
-:- dynamic(player/2).
-:- dynamic(currentTurn/1).
+:- dynamic(nbPlayer/1). 
+:- dynamic(player/1).           /*  */
+:- dynamic(currentTurn/1).      /* 0 - nbPlayer */
+:- dynamic(unplacedSoldier/2)   /* playerName,  soldierCount*/
 
 initiating :-
     nl,
@@ -10,7 +11,7 @@ initiating :-
     write('Pemain: '),
     write(X).
 
-checkPlayer:-
+readPlayerNumber:-
     write('Masukkan jumlah pemain: '),
     read(X),
     (X >= 2, X =< 4 ->
@@ -21,3 +22,16 @@ checkPlayer:-
         nl,
         checkPlayer
     ).
+
+readPlayerNames:-
+    _N is 4,
+    _i is 1,
+    repeat,
+    write('Masukkan nama pemain '),
+    write(_i),
+    write(': '),
+    nl,
+    _i is _i + 1,
+    endOfReadPlayerName(_i, _N).
+    
+endOfReadPlayerName(N, N).

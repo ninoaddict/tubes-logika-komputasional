@@ -1,5 +1,7 @@
 :-dynamic(queueName/1).
 
+frontName(X) :- queueName(X),!.
+
 enqueueName:-
     read(Name),
     assertz(queueName(Name)).
