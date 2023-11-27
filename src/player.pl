@@ -1,16 +1,10 @@
 /* DYNAMIC VARIABLE */
-:- dynamic(nbPlayer/1). 
+:- dynamic(nbPlayer/1).         /* player numbers */
 :- dynamic(player/1).           /*  */
 :- dynamic(currentTurn/1).      /* 0 - nbPlayer */
 :- dynamic(unplacedSoldier/2)   /* playerName,  soldierCount*/
 
-initiating :-
-    nl,
-    checkPlayer,
-    nbPlayer(X),
-    write('Pemain: '),
-    write(X).
-
+/* Still in Progress */
 readPlayerNumber:-
     write('Masukkan jumlah pemain: '),
     read(X),
@@ -23,6 +17,7 @@ readPlayerNumber:-
         checkPlayer
     ).
 
+/* Still in Progress */
 readPlayerNames:-
     _N is 4,
     _i is 1,
@@ -35,3 +30,16 @@ readPlayerNames:-
     endOfReadPlayerName(_i, _N).
     
 endOfReadPlayerName(N, N).
+
+/* Access the front name of the queue*/
+currentPlayer(X) :- player(X), !.
+
+/* Move the front name to the back of the queue*/
+dequeuePlayer(X) :- 
+    retract(queueName(Name)),
+    assertz(queueName(Name)),
+    !.
+
+/* Clear the player queue (used in the end of the game) */
+clearPlayerQueue(X) :- 
+    retractall(queueName(_)),!.
