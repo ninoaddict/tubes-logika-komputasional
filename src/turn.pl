@@ -7,55 +7,28 @@ endTurn:-
     currentPlayer(NextName),
     write('Sekarang giliran Player '), write(NextName), write('!'),
     nl,
+    bonusSoldierFromContinents(NextName, BonusContinents),
+    bonusSoldierFromTerritory(NextName,BonusTerritory),
+    Bonus is BonusContinents + BonusTerritory,
     write('Player '), write(NextName), write(' mendapatkan '),
-    write('( )'),
+    write(Bonus),
     write('tentara tambahan.'),
     nl,!.
 
-/* count How many Owner have territories */
-countOwnedTerritories(Owner, Count):-
-    findall(Territories, ownedTerritory(Territories, Owner, _), OwnedTerritories),
-    length(OwnedTerritories,Count).
-
-/* list all continentt that Owner own in Continents*/
-AllOwnedContinent(Owner, Continents):-
-    findall(Continent, ownedContinent(Continent, Owner), Continents),
-
-/* bonus soldier from owned Continents priviledge */
-bonusSoldierFromContinents(Owner,Bonus):-
-    Bonus is 0,
-    AllOwnedContinent(Owner, Continents),
-    (member(asia,Continents) ->
-        Bonus is Bonus + 5
-    ),
-    (member(europe, Continents) ->
-        Bonus is Bonus + 3
-    ),
-    (member(north_america, Continents) ->
-        Bonus is Bonus + 3
-    ),
-    (member(south_america, Continents) ->
-        Bonus is Bonus + 2
-    ),
-    (member(africa, Continents) ->
-        Bonus is Bonus + 2
-    ),
-    (member(australia, Continents) ->
-        Bonus is Bonus + 1
-    ),
-    Bonus is Bonus, !.
-
 /* b. draft */
-draft(Territory, TroopsCount) :- player(X), ownedTerritory(Territory, X , CurrentTeritoryTroops) -> 
-                (unplacedSoldier(X, UnplacedSoldier),
-                (UnplacedSoldier < TroopsCount) -> setOwnedTerritory(Teritory, )
-                (NewNbTroops is TroopsCount + CurrentTeritoryTroops, ,
-                   ) 
+draft(Territory, TroopsCount) :- player(CurrPlayer), ownedTerritory(Territory, CurrPlayer , CurrentTeritoryTroops) -> 
+                (unplacedSoldier(CurrPlayer, UnplacedSoldier),
+                (UnplacedSoldier < TroopsCount) -> 
+                (NewNbTroops is TroopsCount + CurrentTeritoryTroops, setOwnedTerritory(Teritory, CurrPlayer, NewNbTroops ), 
+                 NewUnplacedTroops is UnplacedSoldier - TroopsCount, setUnplacedSoldier(CurrPlayer, NewUnplacedTroops),
+                 format('Player ~w meletakkan ~w tentara tambahan di ~w.', [CurrPlayer, TroopsCount, Teritory]), nl, nl, 
+                 format('Tentara total di ~w: ~w', [Teritory, NewNbTroops]), nl
+                 format('Jumlah Pasukan Tambahan Player ~w: ~w', [CurrPlayer, NewUnplacedTroops]),nl
+                ) 
                 ; (write('Jumlah tentara tambahan Anda kurang.')) ) 
                 ; (write('Teritory ini bukan milik Anda.')).
                                 
-
-/* c. move */
+/* c. move */  
 move(Origin, Dest, X) :- 
     currentPlayer(_currName),
     (ownedTerritory(Origin, _currName, _X) -> (

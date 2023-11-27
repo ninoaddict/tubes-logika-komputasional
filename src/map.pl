@@ -82,35 +82,36 @@ territoryContinent(africa, af3).
 territoryContinent(australia, au1).
 territoryContinent(australia, au2).
 
-territoryName(na1,north_america).
-territoryName(na2,north_america).
-territoryName(na3,north_america).
-territoryName(na4,north_america).
-territoryName(na5,north_america).
+territoryName(na1,canada).
+territoryName(na2,usa).
+territoryName(na3, mexico).
+territoryName(na4, greenland).
+territoryName(na5, cuba).
 
-territoryName(e1,europe).
-territoryName(e2,europe).
-territoryName(e3,europe).
-territoryName(e4,europe).
-territoryName(e5,europe).
+territoryName(eu1,italy).
+territoryName(eu2, germany).
+territoryName(eu3, uk).
+territoryName(eu4, france).
+territoryName(eu5, netherland).
 
-territoryName(a1,asia).
-territoryName(a2,asia).
-territoryName(a3,asia).
-territoryName(a4,asia).
-territoryName(a5,asia).
-territoryName(a6,asia).
-territoryName(a7,asia).
+territoryName(as1, japan).
+territoryName(as2, china).
+territoryName(as3, indonesia).
+territoryName(as4, india).
+territoryName(as5, thailand).
+territoryName(as6, philippines).
+territoryName(as7, singapore).
 
-territoryName(sa1,south_america).
-territoryName(sa2,south_america).
+territoryName(sa1, brazil). 
+territoryName(sa2, argentina).
 
-territoryName(af1,africa).
-territoryName(af2,africa).
-territoryName(af3,africa).
+territoryName(af1, nigeria).
+territoryName(af2, kenya).
+territoryName(af3, niger).
 
-territoryName(au1,australia).
-territoryName(au2,australia).
+territoryName(au1, australia).
+territoryName(au2, newzealand).
+
 /* Adjacent Territory*/
 adjacent(as1, as4).
 adjacent(as1, eu2).
@@ -185,9 +186,37 @@ adjacent(sa2, sa1).
 adjacent(sa2, af1).
 adjacent(sa2, au2).
 
-integerToString(X, Y) :- X < 10, number_codes(X, Codes), atom_codes(String, Codes), atom_concat('00', String, Y), !.
-integerToString(X, Y) :- X < 100, number_codes(X, Codes), atom_codes(String, Codes), atom_concat('0', String, Y), !.
-integerToString(X, Y) :- Y is X,!. 
+/* Adjacent List */
+adjacentList(na1, [na2, na3, as3]).
+adjacentList(na2, [na1, na4, na5]).
+adjacentList(na3, [na1, na4, sa1]).
+adjacentList(na4, [na2, na3, na5]).
+adjacentList(na5, [na2, na4, eu1]).
+
+adjacentList(sa1, [na3, sa2]).
+adjacentList(sa2, [sa1, af1, au2]).
+
+adjacentList(af1, [sa2, af2]).
+adjacentList(af2, [af1, af3, eu4, eu5]).
+adjacentList(af3, [af1, af2]).
+
+adjacentList(eu1, [na5, eu2, eu3]).
+adjacentList(eu2, [eu1, eu3, eu4, as1]).
+adjacentList(eu3, [eu1, eu2, eu4]).
+adjacentList(eu4, [eu2, eu3, eu5, af2]).
+adjacentList(eu5, [eu4, af2, as4]).
+
+adjacentList(as1, [eu2, as4]).
+adjacentList(as2, [as4, as5, as6]).
+adjacentList(as3, [as5, na1, na3]).
+adjacentList(as4, [as1, as2, as5, es5]).
+adjacentList(as5, [as2, as4, as6, as7]).
+adjacentList(as6, [as2, as5, as7, au1]).
+adjacentList(as7, [as5, as6]).
+
+adjacentList(au1, [as6, au2]).
+adjacentList(au2, [au1, sa2]).
+
 
 displayMap :- 
     nl,
@@ -208,11 +237,23 @@ displayMap :-
     write('----|                               #                            #             [AU1('), ownedTerritory(au1, _, _AU1), integerToString(_AU1, _RAU1), write(_RAU1), write(']---[AU2('), ownedTerritory(au2, _, _au2), integerToString(_au2, _Rau2), write(_Rau2), write(']------'), nl,
     write('#                                   #                            #                                       #'), nl, 
     write('#       South America               #         Africa             #          Australia                    #'), nl, 
-    write('##########################################################################################################'), !.
+    write('##########################################################################################################'), nl, !.
 
 
-/* Set the number of unplaced Troops of player A*/
-/* setUnplacedS */
 
 /* Set the owner territory */
 setOwnedTerritory(TerrName, Owner, X) :- retract(ownedTerritory(TerrName, _, _)), assertz(ownedTerritory(TerrName, Owner, X)),!.
+
+/* count How many Owner have territories */
+countOwnedTerritories(Owner, Count):-
+    findall(Territories, ownedTerritory(Territories, Owner, _), OwnedTerritories),
+    length(OwnedTerritories,Count).
+
+/* list all continent that Owner own in Continents*/
+allOwnedContinent(Owner, Continents):-
+    findall(Continent, ownedContinent(Continent, Owner), Continents),!.
+
+/* count placed Soldier in Map */
+countPlacedSoldier(Owner,Count):-
+    findall(Soldier, ownedTerritory(_, Owner, Soldier), SoldierList),
+    countSoldier

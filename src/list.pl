@@ -43,3 +43,15 @@ setElmt([H|T],Idx,Val,Res):-
     Idx1 is Idx-1,
     setElmt(T,Idx1,Val,Res1),
     Res = [H|Res1].
+
+sumUntil([], _, 0) :- !.
+sumUntil([X|_], 0, X) :- !.
+sumUntil([X|Y], IndexUntil, Res) :- IndexNext is IndexUntil - 1, sumUntil(Y, IndexNext, Res2), Res is Res2 + X.
+
+/* write List without bracket -> ex : elmt1, elmt2, ... elmt*/
+writeList([Head|[]]):-
+    write(Head),nl.
+writeList([Head|Tail]):-
+    write(Head),
+    write(', '),
+    writeList(Tail).
