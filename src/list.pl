@@ -87,7 +87,8 @@ sortName(LDice, LName, ResD, ResL):-
     ResD = [A|Result],
     ResL = [An|ResultN], !.
 
-    sumUntil([], _, 0) :- !.
+/* sum list of integer until Index IndexUntil (Index start from 0)*/
+sumUntil([], _, 0) :- !.
 sumUntil([X|_], 0, X) :- !.
 sumUntil([X|Y], IndexUntil, Res) :- IndexNext is IndexUntil - 1, sumUntil(Y, IndexNext, Res2), Res is Res2 + X.
 
@@ -98,3 +99,14 @@ writeList([Head|Tail]):-
     write(Head),
     write(', '),
     writeList(Tail).
+
+/* Return the length of the list */
+listLength([], X) :- X is 0, !.
+listLength([H|T], X) :- listLength(T, X1), X is X1 + 1, !.
+
+
+/* Return the Idx-th element of the list*/
+getElementString([], _, _) :- fail.
+getElementString([A|B], Idx, ELmt) :- 
+    (Idx =:= 1, ELmt = A, !);
+    (Idx =\= 1, Idx1 is Idx -1, getElementString(B, Idx1, ELmt)).
