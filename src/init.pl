@@ -1,4 +1,3 @@
-:- dynamic(nbPlayer/1).
 :- dynamic(traversal/1).
 :- dynamic(listName/1).
 :- dynamic(listDice/1).
@@ -8,7 +7,7 @@ startGame :-
     retractall(traversal(_)),
     retractall(listName(_)),
     repeat,
-    write('Masukkan jumlah pemain: '),
+    write('\nMasukkan jumlah pemain: '),
     read(NBPlayer),
     (validNBPlayer(NBPlayer) ->
         !
@@ -29,16 +28,19 @@ startGame :-
     InitNum is 1,
     (countPlayerDice(InitNum) ->
         listDice(ListDice),
-        (isUnique(ListDice) -> 
+        (isMaxValid(ListDice) -> 
             !
         ; 
-            write('\nAda beberapa pemain yang mendapatkan gulungan dadu yang sama, pelemparan dadu diulang.\n'),
+            write('\nAda beberapa pemain dengan gulungan dadu terbesar yang sama, pelemparan dadu diulang.\n'),
             fail
         )
     ; 
         true
     ),
-    write('\nSuccess\n'), !.
+    handleOrder, nl,
+    write('Urutan pemain:'), Order is 1,displayOrder(Order),
+    currentPlayer(CurP),
+    format('~w dapat memulai terlebih dahulu.\n', [CurP]).
 
 validNBPlayer(N):- N > 1, N < 5, !.
 
@@ -68,19 +70,46 @@ isInList(X) :-
     listName(L),
     member(X, L).
 
-countPlayerDice(N):- 
+countPlayerDice(N):-
     nbPlayer(Nplayer), 
     (N =< Nplayer, 
-    roll2Dices(X),
+    roll2Dices(DiceNum),
     listName(LisNem), 
     getName(LisNem, N, CurName),
-    format('~w melempar dadu dan mendapatkan ~d.\n', [CurName, X]),
+    format('~w melempar dadu dan mendapatkan ~d.\n', [CurName, DiceNum]),
     retract(listDice(DiceList)),
-    addEnd(DiceList, X, NewDice),
+    addEnd(DiceList, DiceNum, NewDice),
     assertz(listDice(NewDice)),
     N1 is N + 1,
-    countPlayerDice(N1),
-    !
-    ; 
-    true
-    ).
+    countPlayerDice(N1), !
+    ; true
+    ),
+    !.
+
+handleOrder:-
+    retractall(player(_)), retractall(turnPlayer(_,_)),
+    listDice(LD),
+    max(LD, Max),
+    getIndex(LD, Max, Index),
+    listName(LN),
+    setPlayerOrder(Index, LN, 1),!.
+
+setPlayerOrder(1, [], _) :-!.
+setPlayerOrder(1, [A|B], Num):-
+    assertz(player(A)), assertz(turnPlayer(A,Num)),
+    Num1 is Num + 1, setPlayerOrder(1, B, Num1), !.
+setPlayerOrder(Idx, [A|B], Num):-
+    Idx1 is Idx -1, addEnd(B,A,Res),setPlayerOrder(Idx1,Res,Num), !.
+
+displayOrder(N):-
+    nbPlayer(Nplayer),
+    (N =< Nplayer,
+    retract(player(Name)),
+    (N =\= Nplayer -> (
+        format(' ~w -', [Name])
+    );(
+        format(' ~w\n', [Name])
+    )),
+    assertz(player(Name)),
+    N1 is N+1, displayOrder(N1); true),
+    !. 
