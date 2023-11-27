@@ -1,8 +1,7 @@
 /* FACTS */
 /* Dynamic Variable */
-:- dynamic(ownedTerritory/3).
-:- dynamic(mapName/2).
-:- dynamic(ownedContinent/2).
+:- dynamic(ownedTerritory/3). /* teritoryCode, ownerName, troopsCount */
+:- dynamic(ownedContinent/2). /* continentName, ownerName */
 
 /* Dummyu Insertion Of OwnedTerritory */
 ownedTerritory(as1, berto, 3).
@@ -34,6 +33,15 @@ ownedTerritory(af3, adril, 9).
 
 ownedTerritory(au1, metiw, 5).
 ownedTerritory(au2, metiw, 5).
+
+/* Dummy Insertion of ownedContinent*/
+ownedContinent(asia, berto).
+ownedContinent(asia, matthew).
+ownedContinent(europe, berto).
+ownedContinent(north_america, berto).
+ownedContinent(south_america, matthew).
+ownedContinent(africa, berto).
+ownedContinent(australia, berto).
 
 /* Continent*/
 continent(asia).
@@ -74,7 +82,6 @@ territoryContinent(africa, af3).
 territoryContinent(australia, au1).
 territoryContinent(australia, au2).
 
-/* slang territory name */
 territoryName(na1,north_america).
 territoryName(na2,north_america).
 territoryName(na3,north_america).
@@ -201,4 +208,11 @@ displayMap :-
     write('----|                               #                            #             [AU1('), ownedTerritory(au1, _, _AU1), integerToString(_AU1, _RAU1), write(_RAU1), write(']---[AU2('), ownedTerritory(au2, _, _au2), integerToString(_au2, _Rau2), write(_Rau2), write(']------'), nl,
     write('#                                   #                            #                                       #'), nl, 
     write('#       South America               #         Africa             #          Australia                    #'), nl, 
-    write('##########################################################################################################').
+    write('##########################################################################################################'), !.
+
+
+/* Set the number of unplaced Troops of player A*/
+/* setUnplacedS */
+
+/* Set the owner territory */
+setOwnedTerritory(TerrName, Owner, X) :- retract(ownedTerritory(TerrName, _, _)), assertz(ownedTerritory(TerrName, Owner, X)),!.
