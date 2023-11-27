@@ -1,7 +1,6 @@
 /* DYNAMIC VARIABLE */
 :- dynamic(nbPlayer/1).         /* player numbers */
 :- dynamic(player/1).           /*  */
-:- dynamic(currentTurn/1).      /* 0 - nbPlayer */
 :- dynamic(unplacedSoldier/2).   /* playerName,  soldierCount*/
 :- dynamic(turnPlayer/2).
 
@@ -91,34 +90,34 @@ bonusSoldierFromTerritory(Owner,Bonus):-
 /* asumsi: turnPlayer(berto,1) , turnPlayer(matthew,2), turnPlayer(adril,3)
          : nbPlayer tidak berkurang
 */
-checkPlayerDetail(X):-
-    nbPlayer(Count),
-    ((X = p1 ; X = P1) , Count >= 1 ->
-        findall(Player,turnPlayer(Player,1), PlayerName),
-        write('Player P1')
-    ; 
-        ((X = p2 ; X = P2) , Count >= 2 ->
-            findall(Player,turnPlayer(Player,2), PlayerName),
-            write('Player P2')
-        ;   
-            ((X = p3; X = P3) , Count >= 3 ->
-                findall(Player, turnPlayer(Player,3), PlayerName),
-                write('Player P3')
-            ;
-                ((X = p4; X = P4), Count = 4 ->
-                    findall(Player, turnPlayer(Player,4), PlayerName)
-                    write('Player P4')
-                ;
-                    write('Masukkan input yang benar!'), nl, !.
-                ) 
-            )
-        )
-    ),nl,nl,
-    allOwnedContinent(PlayerName,Continents), 
-    countOwnedTerritories(PlayerName, TerritoryOwn),
-    unplacedSoldier(PlayerName,NbUnplacedSoldier),
-    write('Nama                   : '),write(PlayerName),nl,
-    write('Benua                  : '),writeList(Continents),nl,
-    write('Total Wilayah          : '),write(TerritoryOwn),nl,
-    write('Total Tentara Aktif    : '),write(),nl,
-    write('Total Tentara Tambahan : '),write(NbUnplacedSoldier),nl.
+% checkPlayerDetail(X):-
+%     nbPlayer(Count),
+%     ((X = p1 ; X = P1) , Count >= 1 ->
+%         findall(Player,turnPlayer(Player,1), PlayerName),
+%         write('Player P1')
+%     ; 
+%         ((X = p2 ; X = P2) , Count >= 2 ->
+%             findall(Player,turnPlayer(Player,2), PlayerName),
+%             write('Player P2')
+%         ;   
+%             ((X = p3; X = P3) , Count >= 3 ->
+%                 findall(Player, turnPlayer(Player,3), PlayerName),
+%                 write('Player P3')
+%             ;
+%                 ((X = p4; X = P4), Count = 4 ->
+%                     findall(Player, turnPlayer(Player,4), PlayerName),
+%                     write('Player P4')
+%                 ;
+%                     write('Masukkan input yang benar!'), nl, !,
+%                 ),
+%             )
+%         )
+%     ),nl,nl,
+%     allOwnedContinent(PlayerName,Continents), 
+%     countOwnedTerritories(PlayerName, TerritoryOwn),
+%     unplacedSoldier(PlayerName,NbUnplacedSoldier),
+%     write('Nama                   : '),write(PlayerName),nl,
+%     write('Benua                  : '),writeList(Continents),nl,
+%     write('Total Wilayah          : '),write(TerritoryOwn),nl,
+%     write('Total Tentara Aktif    : '),write(),nl,
+%     write('Total Tentara Tambahan : '),write(NbUnplacedSoldier),nl.

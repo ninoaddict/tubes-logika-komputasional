@@ -16,9 +16,9 @@ endTurn:-
     nl,!.
 
 /* b. draft */
-draft(Territory, TroopsCount) :- player(CurrPlayer), ownedTerritory(Territory, CurrPlayer , CurrentTeritoryTroops) -> 
+draft(Territory, TroopsCount) :- currentPlayer(CurrPlayer), ownedTerritory(Territory, CurrPlayer , CurrentTeritoryTroops) -> 
                 (unplacedSoldier(CurrPlayer, UnplacedSoldier),
-                (UnplacedSoldier < TroopsCount) -> 
+                (UnplacedSoldier > TroopsCount) -> 
                 (NewNbTroops is TroopsCount + CurrentTeritoryTroops, setOwnedTerritory(Teritory, CurrPlayer, NewNbTroops ), 
                  NewUnplacedTroops is UnplacedSoldier - TroopsCount, setUnplacedSoldier(CurrPlayer, NewUnplacedTroops),
                  format('Player ~w meletakkan ~w tentara tambahan di ~w.', [CurrPlayer, TroopsCount, Teritory]), nl, nl, 

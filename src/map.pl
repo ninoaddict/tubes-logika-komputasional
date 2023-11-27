@@ -4,44 +4,44 @@
 :- dynamic(ownedContinent/2). /* continentName, ownerName */
 
 /* Dummyu Insertion Of OwnedTerritory */
-ownedTerritory(as1, berto, 3).
-ownedTerritory(as2, berto, 3).
-ownedTerritory(as3, berto, 3).
-ownedTerritory(as4, berto, 3).
-ownedTerritory(as5, berto, 3).
-ownedTerritory(as6, berto, 3).
-ownedTerritory(as7, berto, 3).
+% ownedTerritory(as1, berto, 3).
+% ownedTerritory(as2, berto, 3).
+% ownedTerritory(as3, berto, 3).
+% ownedTerritory(as4, berto, 3).
+% ownedTerritory(as5, berto, 3).
+% ownedTerritory(as6, berto, 3).
+% ownedTerritory(as7, berto, 3).
 
-ownedTerritory(eu1, mahew, 2).
-ownedTerritory(eu2, mahew, 2).
-ownedTerritory(eu3, mahew, 2).
-ownedTerritory(eu4, mahew, 2).
-ownedTerritory(eu5, mahew, 2).
+% ownedTerritory(eu1, mahew, 2).
+% ownedTerritory(eu2, mahew, 2).
+% ownedTerritory(eu3, mahew, 2).
+% ownedTerritory(eu4, mahew, 2).
+% ownedTerritory(eu5, mahew, 2).
 
-ownedTerritory(na1, suta, 5).
-ownedTerritory(na2, suta, 15).
-ownedTerritory(na3, suta, 5).
-ownedTerritory(na4, suta, 5).
-ownedTerritory(na5, suta, 5).
+% ownedTerritory(na1, suta, 5).
+% ownedTerritory(na2, suta, 15).
+% ownedTerritory(na3, suta, 5).
+% ownedTerritory(na4, suta, 5).
+% ownedTerritory(na5, suta, 5).
 
-ownedTerritory(sa1, kielcina, 1).
-ownedTerritory(sa2, kielcina, 1).
+% ownedTerritory(sa1, kielcina, 1).
+% ownedTerritory(sa2, kielcina, 1).
 
-ownedTerritory(af1, adril, 9).
-ownedTerritory(af2, adril, 9).
-ownedTerritory(af3, adril, 9).
+% ownedTerritory(af1, adril, 9).
+% ownedTerritory(af2, adril, 9).
+% ownedTerritory(af3, adril, 9).
 
-ownedTerritory(au1, metiw, 5).
-ownedTerritory(au2, metiw, 5).
+% ownedTerritory(au1, metiw, 5).
+% ownedTerritory(au2, metiw, 5).
 
-/* Dummy Insertion of ownedContinent*/
-ownedContinent(asia, berto).
-ownedContinent(asia, matthew).
-ownedContinent(europe, berto).
-ownedContinent(north_america, berto).
-ownedContinent(south_america, matthew).
-ownedContinent(africa, berto).
-ownedContinent(australia, berto).
+% /* Dummy Insertion of ownedContinent*/
+% ownedContinent(asia, berto).
+% ownedContinent(asia, matthew).
+% ownedContinent(europe, berto).
+% ownedContinent(north_america, berto).
+% ownedContinent(south_america, matthew).
+% ownedContinent(africa, berto).
+% ownedContinent(australia, berto).
 
 /* Continent*/
 continent(asia).
@@ -254,6 +254,6 @@ allOwnedContinent(Owner, Continents):-
     findall(Continent, ownedContinent(Continent, Owner), Continents),!.
 
 /* count placed Soldier in Map */
-countPlacedSoldier(Owner,Count):-
-    findall(Soldier, ownedTerritory(_, Owner, Soldier), SoldierList),
-    countSoldier
+% countPlacedSoldier(Owner,Count):-
+%     findall(Soldier, ownedTerritory(_, Owner, Soldier), SoldierList),
+%     countSoldier

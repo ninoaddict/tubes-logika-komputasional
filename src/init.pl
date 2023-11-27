@@ -1,11 +1,21 @@
 :- dynamic(traversal/1).
 :- dynamic(listName/1).
 :- dynamic(listDice/1).
+:- dynamic(isInit/1).
+:- dynamic(isTerritoryPhase/1).
+:- dynamic(isPlayTheGame/1).
+:- dynamic(isSpreadSoldier/1).
 
-startGame :- 
+startGame :-
+    \+isInit(_),
     retractall(nbPlayer(_)),
     retractall(traversal(_)),
     retractall(listName(_)),
+    retractall(isPlayTheGame(_)),
+    retractall(isSpreadSoldier(_)),
+    retractall(ownedTerritory(_,_,_)),
+    retractall(ownedContinent(_,_)),
+    retractall(unplacedSoldier(_,_)),
     repeat,
     write('\nMasukkan jumlah pemain: '),
     read(NBPlayer),
@@ -28,7 +38,7 @@ startGame :-
     InitNum is 1,
     (countPlayerDice(InitNum) ->
         listDice(ListDice),
-        (isMaxValid(ListDice) -> 
+        (isMaxValid(ListDice) ->
             !
         ; 
             write('\nAda beberapa pemain dengan gulungan dadu terbesar yang sama, pelemparan dadu diulang.\n'),
@@ -40,7 +50,43 @@ startGame :-
     handleOrder, nl,
     write('Urutan pemain:'), Order is 1,displayOrder(Order),
     currentPlayer(CurP),
-    format('~w dapat memulai terlebih dahulu.\n', [CurP]).
+    format('~w dapat memulai terlebih dahulu.\n', [CurP]), nl,
+    soldierPerPlayer(Count),
+    handleUnplacedSoldier(1),
+    format('Setiap pemain mendapatkan ~d tentara.\n', [Count]),
+    format('\nGiliran ~w untuk memilih wilayahnya.\n', [CurP]),
+    assertz(isInit(true)),
+    assertz(isTerritoryPhase(true)),
+    retractall(listName(_)), retractall(listDice(_)), retractall(traversal(_)),!.
+
+takeLocation(Terr) :-
+    isTerritoryPhase(_),
+    territoryContinent(_, Terr),
+    currentPlayer(Name),
+    (
+        \+(ownedTerritory(Terr, _, _)) ->
+            format('\n~w mengambil wilayah ~w.\n', [Name, Terr]),
+            assertz(ownedTerritory(Terr, Name, 1)),
+            unplacedSoldier(Name, X),
+            setUnplacedSoldier(Name, X - 1),
+            retract(player(Nm)),
+            assertz(player(Nm))
+    ;
+        ownedTerritory(Terr,_,_),write('\nWilayah sudah dikuasai. Tidak bisa mengambil.\n')
+    ),
+    currentPlayer(Cpl),
+    (
+        spreadSoldierPhase ->
+            retractall(isTerritoryPhase(_)), 
+            assertz(isSpreadSoldier(true)),
+            write('\nSeluruh wilayah telah diambil pemain.\n'),
+            write('Memulai pembagian sisa tentara.\n'),
+            format('Giliran ~w untuk meletakkan tentaranya.\n', [Cpl])
+            ;
+            format('\nGiliran ~w untuk memilih wilayahnya.\n', [Cpl])
+    ),
+    !.
+
 
 validNBPlayer(N):- N > 1, N < 5, !.
 
@@ -113,3 +159,57 @@ displayOrder(N):-
     assertz(player(Name)),
     N1 is N+1, displayOrder(N1); true),
     !. 
+
+handleUnplacedSoldier(N) :-
+    nbPlayer(Nplayer),
+    (N =< Nplayer,
+    (
+        Nplayer =:= 2,
+        retract(player(Name)),
+        assertz(unplacedSoldier(Name, 24)),
+        assertz(player(Name));
+        Nplayer =:= 3,
+        retract(player(Name)),
+        assertz(unplacedSoldier(Name, 16)),
+        assertz(player(Name));
+        Nplayer =:= 4,
+        retract(player(Name)),
+        assertz(unplacedSoldier(Name, 12)),
+        assertz(player(Name))
+    ), N1 is N+1,handleUnplacedSoldier(N1);
+    true
+    ), !.
+
+soldierPerPlayer(Count):-
+    nbPlayer(Nplayer),
+    (Nplayer =:= 2, Count is 24;
+    Nplayer =:= 3, Count is 16;
+    Nplayer =:= 4, Count is 12),
+    !.
+
+spreadSoldierPhase:-
+    ownedTerritory(as1,_,_),
+    ownedTerritory(as2,_,_),
+    ownedTerritory(as3,_,_),
+    ownedTerritory(as4,_,_),
+    ownedTerritory(as5,_,_),
+    ownedTerritory(as6,_,_),
+    ownedTerritory(as7,_,_),
+    ownedTerritory(eu1,_,_),
+    ownedTerritory(eu2,_,_),
+    ownedTerritory(eu3,_,_),
+    ownedTerritory(eu4,_,_),
+    ownedTerritory(eu5,_,_),
+    ownedTerritory(na1,_,_),
+    ownedTerritory(na2,_,_),
+    ownedTerritory(na3,_,_),
+    ownedTerritory(na4,_,_),
+    ownedTerritory(na5,_,_),
+    ownedTerritory(sa1,_,_),
+    ownedTerritory(sa2,_,_),
+    ownedTerritory(af1,_,_),
+    ownedTerritory(af2,_,_),
+    ownedTerritory(af3,_,_),
+    ownedTerritory(au1,_,_),
+    ownedTerritory(au2,_,_),!.
+    
