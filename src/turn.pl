@@ -13,7 +13,63 @@ endTurn:-
     write('Player '), write(NextName), write(' mendapatkan '),
     write(Bonus),
     write('tentara tambahan.'),
+    setUnplacedSoldier(NextName,Bonus),
     nl,!.
+
+/* count How many Owner have territories */
+countOwnedTerritories(Owner, Count):-
+    findall(Territories, ownedTerritory(Territories, Owner, _), OwnedTerritories),
+    length(OwnedTerritories,Count).
+
+/* list all continentt that Owner own in Continents*/
+allOwnedContinent(Owner, Continents):-
+    findall(Continent, ownedContinent(Continent, Owner), Continents),
+
+/* bonus soldier from owned Continents priviledge */
+bonusSoldierFromContinents(Owner,Bonus):-
+    allOwnedContinent(Owner, Continents),
+    (member(asia,Continents) ->
+        BonusAsia = 5
+    ;   BonusAsia = 0
+    ),
+    (member(europe, Continents) ->
+        BonusEurope = 3
+    ;   BonusEurope = 0
+    ),
+    (member(north_america, Continents) ->
+        BonusNorthAmerica = 3
+    ;   BonusNorthAmerica = 0
+    ),
+    (member(south_america, Continents) ->
+        BonusSouthAmerica = 2
+    ;   BonusSouthAmerica = 0
+    ),
+    (member(africa, Continents) ->
+        BonusAfrica = 2
+    ;   BonusAfrica = 0
+    ),
+    (member(australia, Continents) ->
+        BonusAustralia = 1
+    ;   BonusAustralia = 0
+    ),
+    Bonus is BonusAsia + BonusEurope + BonusNorthAmerica + BonusSouthAmerica + BonusAfrica + BonusAustralia, 
+    !.
+
+/* bonus soldier from sum Territory owned */
+bonusSoldierFromTerritory(Owner,Bonus):-
+    countOwnedTerritories(Owner, Count),
+    (Count mod 2 = 0 ->
+        Bonus is Count / 2
+    ;   Bonus is Count / 2 + 1
+    ), write('Bonus: '), write(Bonus),!.
+
+/* bonus soldier from sum Territory owned */
+bonusSoldierFromTerritory(Owner,Bonus):-
+    countOwnedTerritories(Owner, Count),
+    (Count mod 2 = 0 ->
+        Bonus is Count / 2
+    ;   Bonus is (Count - 1)/ 2
+    ),!.
 
 /* b. draft */
 draft(Territory, TroopsCount) :- player(CurrPlayer), ownedTerritory(Territory, CurrPlayer , CurrentTeritoryTroops) -> 
@@ -28,5 +84,25 @@ draft(Territory, TroopsCount) :- player(CurrPlayer), ownedTerritory(Territory, C
                 ; (write('Jumlah tentara tambahan Anda kurang.')) ) 
                 ; (write('Teritory ini bukan milik Anda.')).
                                 
-/* c. move */  
 
+/* c. move */
+move(Origin, Dest, X) :- 
+    currentPlayer(_currName),
+    (ownedTerritory(Origin, _currName, _X) -> (
+        (ownedTerritory(Dest, _currName, _Y) -> (
+            nl, write(_currName), write(' memindahkan '), write(X), write(' tentara dari '), write(Origin), write(' ke '), write(Dest), write('.\n\n'),
+            ((_X > X) -> (
+                _newX is _X - X,
+                _newY is _Y + X,
+                setOwnedTerritory(Origin, _currName, _newX),
+                setOwnedTerritory(Dest, _currName, _newY),
+                write('Jumlah tentara di '), write(Origin), write(': '), write(_newX), write('\n'),
+                write('Jumlah tentara di '), write(Dest), write(': '), write(_newY), write('\n'),!
+            ));
+            (write('Tentara tidak mencukupi.\npemindahan dibatalkan.\n')),!
+        ));
+        (nl, write(_currName), write(' tidak memiliki wilayah '), write(Dest), write('.\n'), write('pemindahan dibatalkan'), nl), !
+    ));  
+    (nl, write(_currName), write(' tidak memiliki wilayah '), write(Origin), write('.\n'), write('pemindahan dibatalkan'), nl), !. 
+
+/* d. attack */

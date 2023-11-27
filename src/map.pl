@@ -256,7 +256,7 @@ countOwnedTerritories(Owner, Count):-
 
 /* list all continent that Owner own in Continents*/
 allOwnedContinent(Owner, Continents):-
-    findall(Continent, ownedContinent(Continent, Owner), Continents),!.
+    findall(Continent, ownedContinent(Continent, Owner), Continents).
 
 /* count placed Soldier in Map */
 countPlacedSoldier(Owner,Count):-
