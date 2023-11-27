@@ -1,8 +1,9 @@
 /* Deklarasi Rule */
 getElmt([], _, _) :- fail.
-getElement([A|B], Idx, ELmt) :- 
+getElmt([A|B], Idx, ELmt) :- 
     (Idx =:= 1, ELmt is A, !);
-    (Idx =\= 1, Idx1 is Idx -1, getElement(B, Idx1, ELmt)).
+    (Idx =\= 1, Idx1 is Idx -1, getElmt,
+    (B, Idx1, ELmt)).
 
 insertFirst([], X, [X]).
 insertFirst(OldList, X, NewList) :-
@@ -16,13 +17,15 @@ deleteAt([H | T], Index, List) :-
 
 deleteElmt([X|T], X, T).
 deleteElmt([H | T], X, List) :-
-    X =/= H, 
+    X =\= H, 
     deleteElmt(T, X, A),
     List = [H|A].
 
-getIdx([A | B], E, Idx) :- 
-    (E =:= A, Idx is 1, !); 
-    (getIdx(B, E, IdxRes), Idx is IdxRes + 1).
+getIndex([A|B], E, Index):- E =:= A, Index is 1,!; E=\=A, getIndex(B,E,Index1), Index is Index1+1.
+
+isIn([A|B], E, Idx):-
+    (E == A, Idx is 1, !);
+    (E \== A, isIn(B, E, IdxRes), Idx is IdxRes + 1).
 
 isElmt([X | _], X, 1).
 isElmt([_ | T], Elmt, Answer) :-
@@ -38,8 +41,4 @@ indexOf([], _, _) :- fail.
 indexOf([X|_], El, R) :- X = El, !, R is 0.
 indexOf([_|Y], El, R) :- indexOf(Y, El, R2), R is R2 + 1.
 
-setElmt([_|T],1,Val,[Val|T]).
-setElmt([H|T],Idx,Val,Res):- 
-    Idx1 is Idx-1,
-    setElmt(T,Idx1,Val,Res1),
-    Res = [H|Res1].
+

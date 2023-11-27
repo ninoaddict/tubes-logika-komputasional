@@ -1,6 +1,4 @@
 :- dynamic(queueName/1).
-:- dynamic(traversal/1).
-:- dynamic(listName/1).
 
 enqueueName :-
     read(Name),
@@ -18,7 +16,6 @@ clearQueue :-
     retractall(listName(_)),
     ListNm = [],
     assertz(listName(ListNm)),
-    retractall(traversal(_)),
     queueName(_),
     repeat,
     retract(queueName(Name)),
