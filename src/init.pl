@@ -1,6 +1,7 @@
 :- dynamic(nbPlayer/1).
 :- dynamic(traversal/1).
 :- dynamic(listName/1).
+:- dynamic(listDice/1).
 
 startGame :- 
     retractall(nbPlayer(_)),
@@ -22,7 +23,22 @@ startGame :-
     retractall(listName(_)),
     assertz(listName([])),
     askPlayerNames(1, NBPlayer),
-    write('Success\n').
+    repeat,
+    retractall(listDice(_)), nl,
+    assertz(listDice([])),
+    InitNum is 1,
+    (countPlayerDice(InitNum) ->
+        listDice(ListDice),
+        (isUnique(ListDice) -> 
+            !
+        ; 
+            write('\nAda beberapa pemain yang mendapatkan gulungan dadu yang sama, pelemparan dadu diulang.\n'),
+            fail
+        )
+    ; 
+        true
+    ),
+    write('\nSuccess\n'), !.
 
 validNBPlayer(N):- N > 1, N < 5, !.
 
@@ -51,3 +67,20 @@ addPlayerName(X) :-
 isInList(X) :- 
     listName(L),
     member(X, L).
+
+countPlayerDice(N):- 
+    nbPlayer(Nplayer), 
+    (N =< Nplayer, 
+    roll2Dices(X),
+    listName(LisNem), 
+    getName(LisNem, N, CurName),
+    format('~w melempar dadu dan mendapatkan ~d.\n', [CurName, X]),
+    retract(listDice(DiceList)),
+    addEnd(DiceList, X, NewDice),
+    assertz(listDice(NewDice)),
+    N1 is N + 1,
+    countPlayerDice(N1),
+    !
+    ; 
+    true
+    ).

@@ -2,7 +2,9 @@
 :- dynamic(nbPlayer/1).         /* player numbers */
 :- dynamic(player/1).           /*  */
 :- dynamic(currentTurn/1).      /* 0 - nbPlayer */
-:- dynamic(unplacedSoldier/2)   /* playerName,  soldierCount*/
+:- dynamic(unplacedSoldier/2).   /* playerName,  soldierCount*/
+:- dynamic(turnPlayer/2).
+
 
 /* Still in Progress */
 readPlayerNumber:-

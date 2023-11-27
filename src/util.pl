@@ -3,4 +3,4 @@ rollDice(X):-
     X is Result.
 
 roll2Dices(X):- 
-    rollDice(_1), rollDice(_2), X is _1 + _2;
+    rollDice(_1), rollDice(_2), X is _1 + _2.
