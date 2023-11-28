@@ -15,57 +15,23 @@ setUnplacedSoldier(PlayerName, SoldierCount) :- retract(unplacedSoldier(PlayerNa
     not lose and delete the player and give message if the player lose */
 checkLose(Player) :- 
             ownedTeritories(Player, TerList), isEmpty(TerList), 
-            retract(unplacedSoldier(Player, _)) retract(player(Player)),
-            retract(listName(Player)),
-            format('Jumlah wilayah player ~w  0.', [Player]),
-            format('Player ~w keluar dari permainan!',[Player]).
+            nl, format('Jumlah wilayah player ~w 0.', [Player]), nl,
+            format('Player ~w keluar dari permainan!',[Player]), 
+            retract(nbPlayer(N)), N1 is N - 1, assertz(nbPlayer(N1)),
+            retract(unplacedSoldier(Player, _)),
+            retract(player(Player)), retract(listName(OldList)),  
+            deleteStr(OldList, Player , NewListName), 
+            assertz(listName(NewListName)),!.
 
 /* check if the player win */
 checkWin(Player) :- 
-            ownedTeritories(Player, TerList), listLength(TerList, TerCount),
-            TerCount is 24, retractall(player(_)), retractall(listName(Player)), 
-            retractall(isInit(_)), retractall(isPlayTheGame(_)),
-            format('Player ~w telah menguasai dunia', [Player]).
-
-/* Still in Progress */
-readPlayerNumber:-
-    write('Masukkan jumlah pemain: '),
-    read(X),
-    (X >= 2, X =< 4 ->
-        retractall(nbPlayer(_)),
-        assertz(nbPlayer(X)),
-        nl
-    ;   write('Mohon masukkan angka antara 2 - 4.'),
-        nl,
-        checkPlayer
-    ).
-
-/* Still in Progress */
-readPlayerNames:-
-    _N is 4,
-    _i is 1,
-    repeat,
-    write('Masukkan nama pemain '),
-    write(_i),
-    write(': '),
-    nl,
-    _i is _i + 1,
-    endOfReadPlayerName(_i, _N).
-    
-endOfReadPlayerName(N, N).
+            nbPlayer(N), N =:= 1, 
+            nl,  format('Player ~w telah menguasai dunia', [Player]), nl,
+            retractall(player(_)), retractall(listName(_)), 
+            retractall(isInit(_)), retractall(isPlayTheGame(_)), !.
 
 /* Access the front name of the queue*/
 currentPlayer(X) :- player(X), !.
-
-/* Move the front name to the back of the queue*/
-dequeuePlayer(X) :- 
-    retract(queueName(Name)),
-    assertz(queueName(Name)),
-    !.
-
-/* Clear the player queue (used in the end of the game) */
-clearPlayerQueue(X) :- 
-    retractall(queueName(_)),!.
 
 /* check Player Detail */
 checkPlayerDetail(X):-
