@@ -17,15 +17,6 @@ endTurn:-
     setUnplacedSoldier(NextName,Bonus),
     nl,!.
 
-/* count How many Owner have territories */
-countOwnedTerritories(Owner, Count):-
-    findall(Territories, ownedTerritory(Territories, Owner, _), OwnedTerritories),
-    length(OwnedTerritories,Count).
-
-/* list all continentt that Owner own in Continents*/
-allOwnedContinent(Owner, Continents):-
-    findall(Continent, ownedContinent(Continent, Owner), Continents),
-
 /* bonus soldier from owned Continents priviledge */
 bonusSoldierFromContinents(Owner,ListBonus):-
     allOwnedContinent(Owner, Continents),
@@ -61,7 +52,7 @@ bonusSoldierFromTerritory(Owner,Bonus):-
     (Count mod 2 = 0 ->
         Bonus is Count / 2
     ;   Bonus is (Count - 1 )/ 2
-    ), write('Bonus: '), write(Bonus),!.
+    ),!.
 
 /* b. draft */
 draft(Territory, TroopsCount) :- currentPlayer(CurrPlayer), ownedTerritory(Territory, CurrPlayer , CurrentTeritoryTroops) -> 
@@ -70,7 +61,7 @@ draft(Territory, TroopsCount) :- currentPlayer(CurrPlayer), ownedTerritory(Terri
                 (NewNbTroops is TroopsCount + CurrentTeritoryTroops, setOwnedTerritory(Teritory, CurrPlayer, NewNbTroops ), 
                  NewUnplacedTroops is UnplacedSoldier - TroopsCount, setUnplacedSoldier(CurrPlayer, NewUnplacedTroops),
                  format('Player ~w meletakkan ~w tentara tambahan di ~w.', [CurrPlayer, TroopsCount, Teritory]), nl, nl, 
-                 format('Tentara total di ~w: ~w', [Teritory, NewNbTroops]), nl
+                 format('Tentara total di ~w: ~w', [Teritory, NewNbTroops]), nl,
                  format('Jumlah Pasukan Tambahan Player ~w: ~w', [CurrPlayer, NewUnplacedTroops]),nl
                 ) 
                 ; (write('Jumlah tentara tambahan Anda kurang.')) ) 

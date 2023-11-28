@@ -83,13 +83,13 @@ territoryContinent(africa, af3).
 territoryContinent(australia, au1).
 territoryContinent(australia, au2).
 
-territoryName(na1,canada).
-territoryName(na2,usa).
+territoryName(na1, canada).
+territoryName(na2, usa).
 territoryName(na3, mexico).
 territoryName(na4, greenland).
 territoryName(na5, cuba).
 
-territoryName(eu1,italy).
+territoryName(eu1, italy).
 territoryName(eu2, germany).
 territoryName(eu3, uk).
 territoryName(eu4, france).
@@ -241,13 +241,17 @@ displayMap :-
     write('##########################################################################################################'), nl, !.
 
 
+/* return how many territory in Continent*/
+countTerritoryInContinent(Continent,Count):-
+    findall(Territory,territoryContinent(Continent,Territory),TerritoryList),
+    length(TerritoryList,Count).
 
 /* Set the owner territory */
 setOwnedTerritory(TerrName, Owner, X) :- retract(ownedTerritory(TerrName, _, _)), assertz(ownedTerritory(TerrName, Owner, X)),!.
 
 /* list of all teritory owned by a player */
-ownedTeritories(Owner, Teritories):-
-    findall(Teritory, ownedTerritory(Teritory, Owner, _), Teritories),!.
+ownedTeritories(Owner, Territories):-
+    findall(Territory, ownedTerritory(Territory, Owner, _), Territories),!.
 
 /* count How many Owner have territories */
 countOwnedTerritories(Owner, Count):-
@@ -263,3 +267,40 @@ countPlacedSoldier(Owner,Count):-
     findall(Soldier, ownedTerritory(_, Owner, Soldier), SoldierList),
     countOwnedTerritories(Owner, SumTerritories),
     sumUntil(SoldierList, SumTerritories - 1, Count).
+
+/* count all owned territories in continent */
+countOwnedTerritoriesInContinent(Owner,Continent,Count):-
+    findall(Territory, ownedTerritory(Territory,Owner,_),TerritoryOwnList),
+    findall(TerritoryContinent,territoryContinent(Continent,territoryContinent),TerritoryContinentList),
+    countElements(TerritoryOwnList,TerritoryContinentList,Count).
+
+/* list owned territories in continent */
+listOwnedTerritoriesInContinent(Owner, Continent, ListOwn):-
+    findall(Territory, ownedTerritory(Territory,Owner,_),TerritoryOwnList),
+    findall(TerritoryContinent,territoryContinent(Continent,territoryContinent),TerritoryContinentList),
+    listSameElements(TerritoryContinentList,TerritoryOwnList,ListOwn).
+
+/* display Own Cotinent detail for checkPlayerTerritories */
+displayOwnContinent(Name,Continent):-
+    countOwnedTerritoriesInContinent(Name,Continent,SumOwnedInContinent),
+    countTerritoryInContinent(Continent,SumTerritoryInContinent),
+    write('Benua '),write(Continent),write(' ('),write(CountOwnInContinent),write('/'),write(SumTerritoryInContinent),write(')'),nl,
+    listOwnedTerritoriesInContinent(Name,Continent,ListOwn),
+    displayOwnTerritories(ListOwn,Name).
+
+/* display Own Territories for checkPlayerTerritories */
+displayOwnTerritories([],Name).
+displayOwnTerritories([Head,[]],Name):-
+    write(Head),nl,
+    territoryName(Head, NameTerritory),
+    ownedTerritory(Head,Name,PlacedSoldier),
+    write('Nama                 : '), write(NameTerritory),nl,
+    write('Jumlah tentara       : '), write(PlacedSoldier),nl,nl.
+
+displayOwnTerritories([Head|Tail],Name):-
+    write(Head),nl,
+    territoryName(Head, NameTerritory),
+    ownedTerritory(Head,Name,PlacedSoldier),
+    write('Nama                 : '), write(NameTerritory),nl,
+    write('Jumlah tentara       : '), write(PlacedSoldier),nl,nl,
+    displayOwnTerritories(Tail,Name),!.
