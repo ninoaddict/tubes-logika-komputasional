@@ -83,25 +83,22 @@ attack :-
         format('Player ~w\n', [AttackedOwner]),
         rollAttackDice(0, AttackedTroopsNumber, Sum2),
         format('Total: ~w\n\n', [Sum2]),
-        attack2(Sum1, Sum2, AttackedArea, SelectedArea, CurrName, AttackedOwner, TroopsNumber, SoldierToAttack, AttackedTroopsNumber),!
-    ));
-    (write('Anda tidak bisa menyerang karena Anda memiliki tepat satu tentara\n')),!.
-
-attack2(Sum1, Sum2, AttackedArea, SelectedArea, CurrName, AttackedOwner, TroopsNumber, SoldierToAttack, AttackedTroopsNumber) :-
-    ((Sum1 > Sum2), (
-        format('Player ~w menang! Wilayah ~w sekarang dikuasai Oleh Player ~w.\n\n', [CurrName, AttackedArea, CurrName]),
-        readStayingTroops(SoldierToAttack, AttackedArea, ResSol),
-        NewX is TroopsNumber - ResSol,
-        NewY is ResSol,
-        setOwnedTerritory(SelectedArea, CurrName, NewX),
-        setOwnedTerritory(AttackedArea, CurrName, NewY),
-        format('Tentara di wilayah ~w: ~w\n', [SelectedArea, NewX]),
-        format('Tentara di wilayah ~w: ~w\n', [AttackedArea, NewY])
-    ));
-    (
-        format('Player ~w menang! Sayang sekali, penyerangan anda gagal!\n :(\n\n', [AttackedOwner]),
-        _pipi is (TroopsNumber - SoldierToAttack),
-        setOwnedTerritory(SelectedArea, CurrName, _pipi),
-        format('Tentara di wilayah ~w: ~w\n', [SelectedArea, _pipi]),
-        format('Tentara di wilayah ~w: ~w\n', [AttackedArea, AttackedTroopsNumber])
-    ),!.
+        ((Sum1 > Sum2) (
+            format('Player ~w menang! Wilayah ~w sekarang dikuasai Oleh Player ~w.\n\n', [CurrName, AttackedArea, CurrName]),
+            readStayingTroops(SoldierToAttack, AttackedArea, ResSol),
+            NewX is TroopsNumber - ResSol,
+            NewY is ResSol,
+            setOwnedTerritory(SelectedArea, CurrName, NewX),
+            setOwnedTerritory(AttackedArea, CurrName, NewY),
+            format('Tentara di wilayah ~w: ~w\n', [SelectedArea, NewX]),
+            format('Tentara di wilayah ~w: ~w\n', [AttackedArea, NewY])
+        );
+        (
+            format('Player ~w menang! Sayang sekali, penyerangan anda gagal!\n :(\n\n', [AttackedOwner]),
+            _pipi is (TroopsNumber - SoldierToAttack),
+            setOwnedTerritory(SelectedArea, CurrName, _pipi),
+            format('Tentara di wilayah ~w: ~w\n', [SelectedArea, _pipi]),
+            format('Tentara di wilayah ~w: ~w\n', [AttackedArea, AttackedTroopsNumber])
+        ))
+    );
+    (write('Anda tidak bisa menyerang karena Anda memiliki tepat satu tentara\n'))),!.
