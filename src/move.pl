@@ -1,4 +1,5 @@
 move(Origin, Dest, X) :- 
+    isPlayTheGame,
     currentPlayer(_currName),
     (ownedTerritory(Origin, _currName, _X) -> (
         (ownedTerritory(Dest, _currName, _Y) -> (
@@ -10,9 +11,9 @@ move(Origin, Dest, X) :-
                 setOwnedTerritory(Dest, _currName, _newY),
                 write('Jumlah tentara di '), write(Origin), write(': '), write(_newX), write('\n'),
                 write('Jumlah tentara di '), write(Dest), write(': '), write(_newY), write('\n'),!
-            ));
-            (write('Tentara tidak mencukupi.\npemindahan dibatalkan.\n')),!
-        ));
-        (nl, write(_currName), write(' tidak memiliki wilayah '), write(Dest), write('.\n'), write('pemindahan dibatalkan'), nl), !
-    ));  
-    (nl, write(_currName), write(' tidak memiliki wilayah '), write(Origin), write('.\n'), write('pemindahan dibatalkan'), nl), !. 
+            );
+            (write('Tentara tidak mencukupi.\npemindahan dibatalkan.\n'))),!
+        );
+        (nl, write(_currName), write(' tidak memiliki wilayah '), write(Dest), write('.\n'), write('pemindahan dibatalkan'), nl)), !
+    );  
+    (nl, write(_currName), write(' tidak memiliki wilayah '), write(Origin), write('.\n'), write('pemindahan dibatalkan'), nl)), !. 
