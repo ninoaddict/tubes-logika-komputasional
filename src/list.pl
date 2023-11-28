@@ -123,3 +123,8 @@ getElementString([A|B], Idx, ELmt) :-
 /* Return head of the list if list only one element (important for checkPlayerDetail)  */
 getHeadList([A|[]], Result):-
     Result = A.
+
+/* append element to list */
+appendList([], Element, [Element]).
+appendList([Head|Tail],Element,[Head|Result]):-
+    appendList(Tail,Element,Result).
