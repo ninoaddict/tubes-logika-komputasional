@@ -3,6 +3,7 @@
 :- dynamic(ownedTerritory/3). /* teritoryCode, ownerName, troopsCount */
 :- dynamic(ownedContinent/2). /* continentName, ownerName */
 
+
 /* Dummyu Insertion Of OwnedTerritory */
 % ownedTerritory(as1, berto, 3).
 % ownedTerritory(as2, berto, 3).
@@ -244,6 +245,10 @@ displayMap :-
 /* Set the owner territory */
 setOwnedTerritory(TerrName, Owner, X) :- retract(ownedTerritory(TerrName, _, _)), assertz(ownedTerritory(TerrName, Owner, X)),!.
 
+/* list of all teritory owned by a player */
+ownedTeritories(Owner, Teritories):-
+    findall(Teritory, ownedTerritory(Teritory, Owner, _), Teritories),!.
+
 /* count How many Owner have territories */
 countOwnedTerritories(Owner, Count):-
     findall(Territories, ownedTerritory(Territories, Owner, _), OwnedTerritories),
@@ -251,9 +256,10 @@ countOwnedTerritories(Owner, Count):-
 
 /* list all continent that Owner own in Continents*/
 allOwnedContinent(Owner, Continents):-
-    findall(Continent, ownedContinent(Continent, Owner), Continents),!.
+    findall(Continent, ownedContinent(Continent, Owner), Continents).
 
 /* count placed Soldier in Map */
-% countPlacedSoldier(Owner,Count):-
-%     findall(Soldier, ownedTerritory(_, Owner, Soldier), SoldierList),
-%     countSoldier
+countPlacedSoldier(Owner,Count):-
+    findall(Soldier, ownedTerritory(_, Owner, Soldier), SoldierList),
+    countOwnedTerritories(Owner, SumTerritories),
+    sumUntil(SoldierList, SumTerritories - 1, Count).

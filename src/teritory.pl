@@ -1,3 +1,9 @@
+writeNeighbours([]) :- fail.
+writeNeighbours([H|[]]) :-
+    territoryName(H, SlangName), format('~w ', [SlangName]).
+writeNeighbours([H|T]) :- 
+    territoryName(H, SlangName), format('~w, ', [SlangName]), writeNeighbours(T).
+
 checkLocationDetail(Teritory) :- 
             ownedTerritory(Teritory, Owner, NbTroops), 
             format('Kode            : ~w',[Teritory]), nl,
