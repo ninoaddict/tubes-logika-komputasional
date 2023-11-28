@@ -57,7 +57,7 @@ startGame :-
     format('\nGiliran ~w untuk memilih wilayahnya.\n', [CurP]),
     assertz(isInit(true)),
     assertz(isTerritoryPhase(true)),
-    retractall(listName(_)), retractall(listDice(_)), retractall(traversal(_)),!.
+    retractall(listDice(_)), retractall(traversal(_)),!.
 
 takeLocation(Terr) :-
     isTerritoryPhase(_),
@@ -87,6 +87,50 @@ takeLocation(Terr) :-
     ),
     !.
 
+placeTroops(Terr, Ntroop):-
+    isSpreadSoldier(_),
+    currentPlayer(Cpl),
+    (ownedTerritory(Terr,Cpl,_) ->
+        ((unplacedSoldier(Cpl, TroopsLeft),
+        (TroopsLeft < Ntroop,
+        write('\nPasukan tidak mencukupi.\n'),
+        format('Jumlah Pasukan Player ~w: ~d\n', [Cpl,TroopsLeft]));
+        (unplacedSoldier(Cpl,TroopsL),TroopsL >= Ntroop,
+        retract(unplacedSoldier(Cpl, TL)),
+        TL1 is TL - Ntroop,
+        assertz(unplacedSoldier(Cpl, TL1)),
+        retract(ownedTerritory(Terr, Cpl, Troops)),
+        TroopsNow is Troops+Ntroop,
+        assertz(ownedTerritory(Terr, Cpl, TroopsNow)),
+        format('\n~w meletakkan ~d tentara di wilayah ~w.\n',[Cpl, Ntroop, Terr]),
+        (TL1 > 0 -> 
+            format('Terdapat ~d tentara tersisa.\n', [TL1]);
+            format('Seluruh tentara ~w sudah diletakkan.\n', [Cpl]),
+            retract(player(Name)),
+            assertz(player(Name))
+        ),
+        (playTheGame ->
+            write('\nSeluruh pemain telah meletakkan sisa tentara.\n'),
+            write('Memulai permainan.\n'),
+            retractall(isSpreadSoldier(_)),
+            assertz(isPlayTheGame(true)),
+            currentPlayer(CurPl),
+            format('\nSekarang giliran Player ~w!\n', [CurPl])
+            ;
+            true, !
+        ))),
+            (\+playTheGame ->
+                currentPlayer(CurrPl),
+                format('\nGiliran ~w untuk meletakkan tentaranya.\n', [CurrPl]);
+                true, !
+            )
+        )
+        ;
+        write('\nWilayah tersebut dimiliki pemain lain.\n'),
+        write('Silahkan pilih wilayah lain.\n'),
+        format('\nGiliran ~w untuk meletakkan tentaranya.\n', [Cpl])
+    ),
+    !.
 
 validNBPlayer(N):- N > 1, N < 5, !.
 
@@ -212,4 +256,14 @@ spreadSoldierPhase:-
     ownedTerritory(af3,_,_),
     ownedTerritory(au1,_,_),
     ownedTerritory(au2,_,_),!.
+
+playTheGame:-
+    listName(LN),
+    handlePlayTheGame(LN),!.
+
+handlePlayTheGame([]):-!.
+handlePlayTheGame([A|B]):-
+    unplacedSoldier(A,NTroops),
+    NTroops =:= 0,
+    handlePlayTheGame(B),!.
     
