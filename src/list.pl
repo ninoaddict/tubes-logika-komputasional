@@ -1,6 +1,9 @@
 /* Deklarasi Rule */
 getElement([A|B], I, Elmt):- I =:= 1, Elmt is A,!; I =\= 1, I1 is I-1,getElement(B,I1,Elmt).
 
+/* True jika isEmpty  */
+isEmpty([]).
+
 insertFirst([], X, [X]).
 insertFirst(OldList, X, NewList) :-
     NewList = [X | OldList].

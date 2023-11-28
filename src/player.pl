@@ -7,6 +7,22 @@
 /* setUnplacedSoldier */
 setUnplacedSoldier(PlayerName, SoldierCount) :- retract(unplacedSoldier(PlayerName, _)), assertz(unplacedSoldier(PlayerName, SoldierCount)),!.
 
+/* check if the player lose, I.S any, F.S do nothing if player 
+    not lose and delete the player and give message if the player lose */
+checkLose(Player) :- 
+            ownedTeritories(Player, TerList), isEmpty(TerList), 
+            retract(unplacedSoldier(Player, _)) retract(player(Player)),
+            retract(listName(Player)),
+            format('Jumlah wilayah player ~w  0.', [Player]),
+            format('Player ~w keluar dari permainan!',[Player]).
+
+/* check if the player win */
+checkWin(Player) :- 
+            ownedTeritories(Player, TerList), listLength(TerList, TerCount),
+            TerCount is 24, retractall(player(_)), retractall(listName(Player)), 
+            retractall(isInit(_)), retractall(isPlayTheGame(_)),
+            format('Player ~w telah menguasai dunia', [Player]).
+
 /* Still in Progress */
 readPlayerNumber:-
     write('Masukkan jumlah pemain: '),
