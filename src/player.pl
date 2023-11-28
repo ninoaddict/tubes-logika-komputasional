@@ -3,7 +3,11 @@
 :- dynamic(player/1).           /*  */
 :- dynamic(unplacedSoldier/2).   /* playerName,  soldierCount*/
 :- dynamic(turnPlayer/2).
-
+nbPlayer(4).
+turnPlayer(suta,1).
+turnPlayer(mahew,2).
+turnPlayer(adril,3).
+turnPlayer(berto,4).
 /* setUnplacedSoldier */
 setUnplacedSoldier(PlayerName, SoldierCount) :- retract(unplacedSoldier(PlayerName, _)), assertz(unplacedSoldier(PlayerName, SoldierCount)),!.
 
@@ -82,29 +86,36 @@ checkPlayerDetail(X):-
 
 
 /* check Player Teritories */
-% checkPlayerTeritories(X):-
-%     nbPlayer(Count),
-%     ((X = p1 ; X = P1) , Count >= 1 ->
-%         findall(Player,turnPlayer(Player,1), PlayerName),
-%         write('Player P1')
-%     ; 
-%         ((X = p2 ; X = P2) , Count >= 2 ->
-%             findall(Player,turnPlayer(Player,2), PlayerName),
-%             write('Player P2')
-%         ;   
-%             ((X = p3; X = P3) , Count >= 3 ->
-%                 findall(Player, turnPlayer(Player,3), PlayerName),
-%                 write('Player P3')
-%             ;
-%                 ((X = p4; X = P4), Count = 4 ->
-%                     findall(Player, turnPlayer(Player,4), PlayerName)
-%                     write('Player P4')
-%                 ;
-%                     format('Masukkan input yang valid! (p1 - p~w)', Count), nl, !.
-%                 ) 
-%             )
-%         )
-%     ),nl,nl.
+checkPlayerTeritories(X):-
+    checkInputPlayer(X,Name),
+    allOwnedContinent(Name,Continents),
+    write('Nama           : '), write(Name),nl,nl,
+    (member('asia',Continents) ->
+        displayOwnContinent(Name,'asia')
+    ;   write('')
+    ),
+    (member('europe',Continents) ->
+        displayOwnContinent(Name,'europe')
+    ;   write('')
+    ),
+    (member('north_america',Continents) ->
+        displayOwnContinent(Name,'north_america')
+    ;   write('')
+    ),
+    (member('south_america',Continents) ->
+        displayOwnContinent(Name,'south_america')
+    ;   write('')
+    ),
+    (member('africa',Continents) ->
+        displayOwnContinent(Name,'africa')
+    ;   write('')
+    ),
+    (member('australia',Continents) ->
+        displayOwnContinent(Name,'australia')
+    ;   write('')
+    ),!.
+
+
 
 /* check Incoming Troops Detail*/
 checkIncomingTroops(X):-

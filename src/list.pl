@@ -131,3 +131,21 @@ getHeadList([A|[]], Result):-
 appendList([], Element, [Element]).
 appendList([Head|Tail],Element,[Head|Result]):-
     appendList(Tail,Element,Result).
+
+/* count how many element list1 that in ListSouce*/
+countElements([], _,0).
+countElements([Head|Tail],ListSource,Count):-
+    (member(Head, ListSource) ->
+        countElements(Tail,ListSource,RestCount),
+        Count is RestCount + 1
+    ;   countElements(Tail,ListSource,Count)
+    ).
+
+/* list same Elements from list 1 and list 2 and append to list 3*/
+listSameElements([],_,[]).
+listSameElements([Head|Tail],ListCompare,Result):-
+    (member(Head,ListCompare) ->
+        Result = [Head|Rest],
+        listSameElements(Tail,ListCompare,Rest)
+    ;   listSameElements(Tail,ListCompare,Result)
+    ).
