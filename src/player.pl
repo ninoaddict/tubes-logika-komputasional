@@ -15,17 +15,17 @@ setUnplacedSoldier(PlayerName, SoldierCount) :- retract(unplacedSoldier(PlayerNa
     not lose and delete the player and give message if the player lose */
 checkLose(Player) :- 
             ownedTeritories(Player, TerList), isEmpty(TerList), 
-            retract(unplacedSoldier(Player, _)) retract(player(Player)),
-            retract(listName(Player)),
-            format('Jumlah wilayah player ~w  0.', [Player]),
-            format('Player ~w keluar dari permainan!',[Player]).
+            nl, format('Jumlah wilayah player ~w 0.', [Player]), nl,
+            format('Player ~w keluar dari permainan!',[Player]), !,
+            retract(unplacedSoldier(Player, _)), retract(player(Player)),
+            retract(listName(Player)),!.
 
 /* check if the player win */
 checkWin(Player) :- 
             ownedTeritories(Player, TerList), listLength(TerList, TerCount),
-            TerCount is 24, retractall(player(_)), retractall(listName(Player)), 
+            TerCount is 24, retractall(player(_)), retractall(listName(_)), 
             retractall(isInit(_)), retractall(isPlayTheGame(_)),
-            format('Player ~w telah menguasai dunia', [Player]).
+            format('Player ~w telah menguasai dunia', [Player]), !.
 
 /* Still in Progress */
 readPlayerNumber:-
