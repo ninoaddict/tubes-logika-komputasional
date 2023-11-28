@@ -21,7 +21,7 @@ startGame :-
     read(NBPlayer),
     (validNBPlayer(NBPlayer) ->
         !
-    ; 
+    ;
         write('Mohon masukkan angka antara 2 - 4.\n'),
         fail
     ),
@@ -116,8 +116,7 @@ placeTroops(Terr, Ntroop):-
             write('Memulai permainan.\n'),
             retractall(isSpreadSoldier(_)),
             assertz(isPlayTheGame(true)),
-            currentPlayer(CurPl),
-            format('\nSekarang giliran Player ~w!\n', [CurPl])
+            intiateFirstTurn
             ;
             true, !
         ))),
@@ -151,14 +150,25 @@ placeAutomatic:-
         write('Memulai permainan.\n'),
         retractall(isSpreadSoldier(_)),
         assertz(isPlayTheGame(true)),
-        currentPlayer(CurPl),
-        format('\nSekarang giliran Player ~w!\n', [CurPl])
+        intiateFirstTurn
         ;
     \+playTheGame,
         currentPlayer(NewPlayer),
         format('\nGiliran ~w untuk meletakkan tentaranya.\n', [NewPlayer])
         ),
     !.
+
+intiateFirstTurn:-
+    currentPlayer(Name),
+    format('\nSekarang giliran Player ~w!\n', [Name]),
+    bonusSoldierFromContinents(Name, ListBonus),
+    bonusSoldierFromTerritory(Name, BonusTerritory),
+    sumUntil(ListBonus,5,BonusContinents),
+    Bonus is BonusContinents + BonusTerritory,
+    format('Player ~w mendapatkan ~d tentara tambahan.\n', [Name, Bonus]),
+    unplacedSoldier(Name, Troops),
+    NewTroops is Troops+Bonus,
+    setUnplacedSoldier(Name, NewTroops),!.
 
 handleListTerritory(Res):-
     currentPlayer(Cpl),
