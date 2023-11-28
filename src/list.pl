@@ -34,7 +34,11 @@ isIn([A|B], E, Idx):-
     (E == A, Idx is 1, !);
     (E \== A, isIn(B, E, IdxRes), Idx is IdxRes + 1).
 
-getName([A|B], I, Elmt):- I =:= 1, Elmt = A,!; I =\= 1, I1 is I-1,getName(B,I1,Elmt).
+getName([A|B], I, Elmt):- 
+    I =:= 1, 
+    Elmt = A,!; I =\= 1, 
+    I1 is I-1,
+    getName(B,I1,Elmt).
 
 setName([_|B], 1, Num, [Num|B]):- !.
 setName([A|B], Index, Num, [A|C]) :- Index > 1, Indexx is Index-1, setName(B,Indexx, Num, C).
