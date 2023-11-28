@@ -16,16 +16,19 @@ setUnplacedSoldier(PlayerName, SoldierCount) :- retract(unplacedSoldier(PlayerNa
 checkLose(Player) :- 
             ownedTeritories(Player, TerList), isEmpty(TerList), 
             nl, format('Jumlah wilayah player ~w 0.', [Player]), nl,
-            format('Player ~w keluar dari permainan!',[Player]), !,
-            retract(unplacedSoldier(Player, _)), retract(player(Player)),
-            retract(listName(Player)),!.
+            format('Player ~w keluar dari permainan!',[Player]), 
+            retract(nbPlayer(N)), N1 is N - 1, assertz(nbPlayer(N1)),
+            retract(unplacedSoldier(Player, _)),
+            retract(player(Player)), retract(listName(OldList)),  
+            deleteStr(OldList, Player , NewListName), 
+            assertz(listName(NewListName)),!.
 
 /* check if the player win */
 checkWin(Player) :- 
-            ownedTeritories(Player, TerList), listLength(TerList, TerCount),
-            TerCount is 24, retractall(player(_)), retractall(listName(_)), 
-            retractall(isInit(_)), retractall(isPlayTheGame(_)),
-            format('Player ~w telah menguasai dunia', [Player]), !.
+            nbPlayer(N), N =:= 1, 
+            nl,  format('Player ~w telah menguasai dunia', [Player]), nl,
+            retractall(player(_)), retractall(listName(_)), 
+            retractall(isInit(_)), retractall(isPlayTheGame(_)), !.
 
 /* Still in Progress */
 readPlayerNumber:-

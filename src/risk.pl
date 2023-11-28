@@ -22,7 +22,14 @@ risk:-
     format('\nPlayer ~w mendapatkan risk card ~w.\n', [Cpl,TypeCard]),
     format('~w\n', [Content]),
     (R =:= 4 ->
-        handleRebellion
+        handleRebellion, currentPlayer(CurrP),
+        (checkLose(CurrP) -> (
+            currentPlayer(Winner), 
+            (checkWin(Winner) -> (
+                true 
+            ) ; (
+                true))
+        ) ; (true))
         ;
         assertz(riskCard(Cpl, R))
     ), assertz(riskTaken(Cpl)),!.
