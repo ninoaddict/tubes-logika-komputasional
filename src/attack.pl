@@ -1,8 +1,24 @@
-printNeighbouringArea([], _).
-printNeighbouringArea([H|T], X) :- 
-    format('~w. ~w', [X, H]), nl,
-    _X is X + 1,
-    printNeighbouringArea(T, _X).
+printNeighbouringArea([], _, Owner).
+printNeighbouringArea([H|T], X, Owner) :-
+    (OwnedTerritory(H, Owner, _) -> 
+    (
+        printNeighbouringArea(T, X, Owner)
+    );
+    (
+        format('~w. ~w', [X, H]), nl,
+        _X is X + 1,
+        printNeighbouringArea(T, _X, Owner),!.
+    )),!.
+
+NeighbouringAreaLength([], Owner, X) :- X is 0, !.
+NeighbouringAreaLength([H|T], Owner, X) :- 
+    (OwnedTerritory(H, Owner, _) -> (
+        NeighbouringAreaLength(T, Owner, X)
+    );
+    (
+        NeighbouringAreaLength(T, Owner, X1),
+        X is X1 + 1
+    )),!.
 
 readSelectedArea(Area, Owner, TroopsNumber) :- 
     write('Pilihlah daerah yang ingin Anda mulai untuk melakukan penyerangan: '),
@@ -70,9 +86,9 @@ attack :-
         readNumberOfTroops(TroopsNumber, SoldierToAttack),
         displayMap, nl, nl,
         write('Pilihlah daerah yang ingin Anda serang.\n'),
-        printNeighbouringArea(NeighbouringArea, 1),
+        printNeighbouringArea(NeighbouringArea, 1, CurrName),
         nl,
-        listLength(NeighbouringArea, Len),
+        NeighbouringAreaLength(NeighbouringArea, CurrName, Len),
         readAttackedArea(Len, Choice),
         getElementString(NeighbouringArea, Choice, AttackedArea),
         write('Perang telah dimulai.\n'),
@@ -83,25 +99,22 @@ attack :-
         format('Player ~w\n', [AttackedOwner]),
         rollAttackDice(0, AttackedTroopsNumber, Sum2),
         format('Total: ~w\n\n', [Sum2]),
-        attack2(Sum1, Sum2, AttackedArea, SelectedArea, CurrName, AttackedOwner, TroopsNumber, SoldierToAttack, AttackedTroopsNumber),!
-    ));
-    (write('Anda tidak bisa menyerang karena Anda memiliki tepat satu tentara\n')),!.
-
-attack2(Sum1, Sum2, AttackedArea, SelectedArea, CurrName, AttackedOwner, TroopsNumber, SoldierToAttack, AttackedTroopsNumber) :-
-    ((Sum1 > Sum2), (
-        format('Player ~w menang! Wilayah ~w sekarang dikuasai Oleh Player ~w.\n\n', [CurrName, AttackedArea, CurrName]),
-        readStayingTroops(SoldierToAttack, AttackedArea, ResSol),
-        NewX is TroopsNumber - ResSol,
-        NewY is ResSol,
-        setOwnedTerritory(SelectedArea, CurrName, NewX),
-        setOwnedTerritory(AttackedArea, CurrName, NewY),
-        format('Tentara di wilayah ~w: ~w\n', [SelectedArea, NewX]),
-        format('Tentara di wilayah ~w: ~w\n', [AttackedArea, NewY])
-    ));
-    (
-        format('Player ~w menang! Sayang sekali, penyerangan anda gagal!\n :(\n\n', [AttackedOwner]),
-        _pipi is (TroopsNumber - SoldierToAttack),
-        setOwnedTerritory(SelectedArea, CurrName, _pipi),
-        format('Tentara di wilayah ~w: ~w\n', [SelectedArea, _pipi]),
-        format('Tentara di wilayah ~w: ~w\n', [AttackedArea, AttackedTroopsNumber])
-    ),!.
+        ((Sum1 > Sum2) (
+            format('Player ~w menang! Wilayah ~w sekarang dikuasai Oleh Player ~w.\n\n', [CurrName, AttackedArea, CurrName]),
+            readStayingTroops(SoldierToAttack, AttackedArea, ResSol),
+            NewX is TroopsNumber - ResSol,
+            NewY is ResSol,
+            setOwnedTerritory(SelectedArea, CurrName, NewX),
+            setOwnedTerritory(AttackedArea, CurrName, NewY),
+            format('Tentara di wilayah ~w: ~w\n', [SelectedArea, NewX]),
+            format('Tentara di wilayah ~w: ~w\n', [AttackedArea, NewY])
+        );
+        (
+            format('Player ~w menang! Sayang sekali, penyerangan anda gagal!\n :(\n\n', [AttackedOwner]),
+            _pipi is (TroopsNumber - SoldierToAttack),
+            setOwnedTerritory(SelectedArea, CurrName, _pipi),
+            format('Tentara di wilayah ~w: ~w\n', [SelectedArea, _pipi]),
+            format('Tentara di wilayah ~w: ~w\n', [AttackedArea, AttackedTroopsNumber])
+        ))
+    );
+    (write('Anda tidak bisa menyerang karena Anda memiliki tepat satu tentara\n'))),!.
