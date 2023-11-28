@@ -7,8 +7,9 @@ endTurn:-
     currentPlayer(NextName),
     write('Sekarang giliran Player '), write(NextName), write('!'),
     nl,
-    bonusSoldierFromContinents(NextName, BonusContinents),
+    bonusSoldierFromContinents(NextName, ListBonus),
     bonusSoldierFromTerritory(NextName,BonusTerritory),
+    sumUntil(ListBonus,5,BonusContinents),
     Bonus is BonusContinents + BonusTerritory,
     write('Player '), write(NextName), write(' mendapatkan '),
     write(Bonus),
@@ -26,7 +27,7 @@ allOwnedContinent(Owner, Continents):-
     findall(Continent, ownedContinent(Continent, Owner), Continents),
 
 /* bonus soldier from owned Continents priviledge */
-bonusSoldierFromContinents(Owner,Bonus):-
+bonusSoldierFromContinents(Owner,ListBonus):-
     allOwnedContinent(Owner, Continents),
     (member(asia,Continents) ->
         BonusAsia = 5
@@ -52,24 +53,15 @@ bonusSoldierFromContinents(Owner,Bonus):-
         BonusAustralia = 1
     ;   BonusAustralia = 0
     ),
-    Bonus is BonusAsia + BonusEurope + BonusNorthAmerica + BonusSouthAmerica + BonusAfrica + BonusAustralia, 
-    !.
+    appendList([BonusAsia,BonusEurope,BonusNorthAmerica,BonusSouthAmerica,BonusAfrica],BonusAustralia,ListBonus),!.
 
 /* bonus soldier from sum Territory owned */
 bonusSoldierFromTerritory(Owner,Bonus):-
     countOwnedTerritories(Owner, Count),
     (Count mod 2 = 0 ->
         Bonus is Count / 2
-    ;   Bonus is Count / 2 + 1
+    ;   Bonus is (Count - 1 )/ 2
     ), write('Bonus: '), write(Bonus),!.
-
-/* bonus soldier from sum Territory owned */
-bonusSoldierFromTerritory(Owner,Bonus):-
-    countOwnedTerritories(Owner, Count),
-    (Count mod 2 = 0 ->
-        Bonus is Count / 2
-    ;   Bonus is (Count - 1)/ 2
-    ),!.
 
 /* b. draft */
 draft(Territory, TroopsCount) :- currentPlayer(CurrPlayer), ownedTerritory(Territory, CurrPlayer , CurrentTeritoryTroops) -> 
