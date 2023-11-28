@@ -10,19 +10,24 @@ endTurn:-
     bonusSoldierFromContinents(NextName, ListBonus),
     bonusSoldierFromTerritory(NextName,BonusTerritory),
     sumUntil(ListBonus,5,BonusContinents),
-    (riskCard(NextName,'AUXILIARY TROOPS') ->
+    (riskCard(NextName,3) ->
         write('Player '),write(NextName),write(' mendapatkan AUXILIARY TROOPS!'),nl,
         Bonus is (BonusContinents + BonusTerritory)*2
     ;   
         Bonus is BonusContinents + BonusTerritory
-    )
-    write('Player '), write(NextName), write(' mendapatkan '),
-    write(Bonus),
-    write('tentara tambahan.'),
-    unplacedSoldier(NextName, Troops),
-    NewTroops is Troops+Bonus,
-    setUnplacedSoldier(NextName,NewTroops),
-    nl,!.
+    ),
+    (riskCard(NextName,6) ->
+        write('Player '),write(NextName),write(' terdampak SUPPLY CHAIN ISSUE!'),nl,nl,
+        write('Player '),write(NextName),write(' tidak mendapatkan tentara tambahan.'),nl,nl
+    ;
+        write('Player '), write(NextName), write(' mendapatkan '),
+        write(Bonus),
+        write('tentara tambahan.'),
+        unplacedSoldier(NextName, Troops),
+        NewTroops is Troops+Bonus,
+        setUnplacedSoldier(NextName,NewTroops),
+        nl
+    ),!.
 
 /* bonus soldier from owned Continents priviledge */
 bonusSoldierFromContinents(Owner,ListBonus):-
