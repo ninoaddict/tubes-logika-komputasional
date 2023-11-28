@@ -19,15 +19,6 @@ endTurn:-
     setUnplacedSoldier(NextName,NewTroops),
     nl,!.
 
-/* count How many Owner have territories */
-countOwnedTerritories(Owner, Count):-
-    findall(Territories, ownedTerritory(Territories, Owner, _), OwnedTerritories),
-    length(OwnedTerritories,Count).
-
-/* list all continentt that Owner own in Continents*/
-allOwnedContinent(Owner, Continents):-
-    findall(Continent, ownedContinent(Continent, Owner), Continents).
-
 /* bonus soldier from owned Continents priviledge */
 bonusSoldierFromContinents(Owner,ListBonus):-
     allOwnedContinent(Owner, Continents),
