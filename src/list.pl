@@ -112,7 +112,7 @@ writeList([Head|Tail]):-
 
 /* Return the length of the list */
 listLength([], X) :- X is 0, !.
-listLength([H|T], X) :- listLength(T, X1), X is X1 + 1, !.
+listLength([_|T], X) :- listLength(T, X1), X is X1 + 1, !.
 
 /* Return the Idx-th element of the list*/
 getElementString([], _, _) :- fail.

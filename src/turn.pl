@@ -14,7 +14,9 @@ endTurn:-
     write('Player '), write(NextName), write(' mendapatkan '),
     write(Bonus),
     write('tentara tambahan.'),
-    setUnplacedSoldier(NextName,Bonus),
+    unplacedSoldier(NextName, Troops),
+    NewTroops is Troops+Bonus,
+    setUnplacedSoldier(NextName,NewTroops),
     nl,!.
 
 /* bonus soldier from owned Continents priviledge */
@@ -49,9 +51,9 @@ bonusSoldierFromContinents(Owner,ListBonus):-
 /* bonus soldier from sum Territory owned */
 bonusSoldierFromTerritory(Owner,Bonus):-
     countOwnedTerritories(Owner, Count),
-    (Count mod 2 = 0 ->
-        Bonus is Count / 2
-    ;   Bonus is (Count - 1 )/ 2
+    (Count mod 2 =:= 0 ->
+        Bonus is Count // 2
+    ;   Bonus is (Count - 1 )// 2
     ),!.
 
 /* b. draft */

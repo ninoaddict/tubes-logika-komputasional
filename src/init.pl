@@ -21,7 +21,7 @@ startGame :-
     read(NBPlayer),
     (validNBPlayer(NBPlayer) ->
         !
-    ; 
+    ;
         write('Mohon masukkan angka antara 2 - 4.\n'),
         fail
     ),
@@ -68,7 +68,8 @@ takeLocation(Terr) :-
             format('\n~w mengambil wilayah ~w.\n', [Name, Terr]),
             assertz(ownedTerritory(Terr, Name, 1)),
             unplacedSoldier(Name, X),
-            setUnplacedSoldier(Name, X - 1),
+            XX is X -1,
+            setUnplacedSoldier(Name, XX),
             retract(player(Nm)),
             assertz(player(Nm))
     ;
@@ -89,6 +90,7 @@ takeLocation(Terr) :-
 
 placeTroops(Terr, Ntroop):-
     isSpreadSoldier(_),
+    Ntroop > 0,
     currentPlayer(Cpl),
     (ownedTerritory(Terr,Cpl,_) ->
         ((unplacedSoldier(Cpl, TroopsLeft),
@@ -114,8 +116,7 @@ placeTroops(Terr, Ntroop):-
             write('Memulai permainan.\n'),
             retractall(isSpreadSoldier(_)),
             assertz(isPlayTheGame(true)),
-            currentPlayer(CurPl),
-            format('\nSekarang giliran Player ~w!\n', [CurPl])
+            intiateFirstTurn
             ;
             true, !
         ))),
@@ -131,6 +132,78 @@ placeTroops(Terr, Ntroop):-
         format('\nGiliran ~w untuk meletakkan tentaranya.\n', [Cpl])
     ),
     !.
+
+placeAutomatic:-
+    isSpreadSoldier(_),
+    handleListTerritory(ListT),
+    nl, currentPlayer(Cpl),
+    unplacedSoldier(Cpl, Num),
+    listLength(ListT, Len),
+    handlePlacement(Num, ListT, Len),
+    setUnplacedSoldier(Cpl, 0),
+    format('Seluruh tentara ~w sudah diletakkan.', [Cpl]),nl,
+    retract(player(Name)),
+    assertz(player(Name)),
+    (playTheGame,
+        nl,
+        write('Seluruh pemain telah meletakkan sisa tentara.\n'),
+        write('Memulai permainan.\n'),
+        retractall(isSpreadSoldier(_)),
+        assertz(isPlayTheGame(true)),
+        intiateFirstTurn
+        ;
+    \+playTheGame,
+        currentPlayer(NewPlayer),
+        format('\nGiliran ~w untuk meletakkan tentaranya.\n', [NewPlayer])
+        ),
+    !.
+
+intiateFirstTurn:-
+    currentPlayer(Name),
+    format('\nSekarang giliran Player ~w!\n', [Name]),
+    bonusSoldierFromContinents(Name, ListBonus),
+    bonusSoldierFromTerritory(Name, BonusTerritory),
+    sumUntil(ListBonus,5,BonusContinents),
+    Bonus is BonusContinents + BonusTerritory,
+    format('Player ~w mendapatkan ~d tentara tambahan.\n', [Name, Bonus]),
+    unplacedSoldier(Name, Troops),
+    NewTroops is Troops+Bonus,
+    setUnplacedSoldier(Name, NewTroops),!.
+
+handleListTerritory(Res):-
+    currentPlayer(Cpl),
+    handleListTerritoryForPlayer(Cpl, Hasil), Res = Hasil,!.
+
+handleListTerritoryForPlayer(Name, Res):-
+    findall(Territory, ownedTerritory(Territory, Name, _), PlayerTerritories),
+    Res = PlayerTerritories, !.
+
+handlePlacement(N, ListTer, Len) :- 
+    N > 0, Len > 0,
+    currentPlayer(Cpl),
+    (Len =:= 1 ->
+        getName(ListTer, 1, X),
+        retract(ownedTerritory(X, Cpl, Troops)),
+        assertz(ownedTerritory(X, Cpl, N + Troops)),
+        format('~w meletakkan ~d tentara di wilayah ~w.\n', [Cpl, N, X])
+    ;
+        Len1 is Len + 1,
+        random(1, Len1, Rndm),
+        getName(ListTer, Rndm, Terr),
+        deleteAt(ListTer, Rndm, NewList),
+        currentPlayer(Cpl),
+        retract(ownedTerritory(Terr, Cpl, Troops)),
+        N1 is N + 1,
+        random(1, N1, RTroops),
+        FT is Troops + RTroops,
+        assertz(ownedTerritory(Terr, Cpl, FT)),
+        format('~w meletakkan ~d tentara di wilayah ~w.\n', [Cpl, RTroops, Terr]),
+        listLength(NewList, NL),
+        N2 is N - RTroops,
+        handlePlacement(N2, NewList, NL)
+    ;
+    true, !
+    ), !.
 
 validNBPlayer(N):- N > 1, N < 5, !.
 
