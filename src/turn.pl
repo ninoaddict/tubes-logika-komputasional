@@ -10,13 +10,13 @@ endTurn:-
     bonusSoldierFromContinents(NextName, ListBonus),
     bonusSoldierFromTerritory(NextName,BonusTerritory),
     sumUntil(ListBonus,5,BonusContinents),
-    (riskCard(NextName,'AUXILIARY TROOPS') ->
+    (riskCard(NextName,3) ->
         write('Player '),write(NextName),write(' mendapatkan AUXILIARY TROOPS!'),nl,
         Bonus is (BonusContinents + BonusTerritory)*2
     ;   
         Bonus is BonusContinents + BonusTerritory
     ),
-    (riskCard(NextName,'SUPPLY CHAIN ISSUE') ->
+    (riskCard(NextName,6) ->
         write('Player '),write(NextName),write(' terdampak SUPPLY CHAIN ISSUE!'),nl,nl,
         write('Player '),write(NextName),write(' tidak mendapatkan tentara tambahan.'),nl,nl
     ;
