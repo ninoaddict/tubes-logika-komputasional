@@ -11,3 +11,4 @@
 :- include('./util.pl').
 :- include('./endTurn.pl').
 :- include('./cwin.pl').
+:- include('./cheat.pl').

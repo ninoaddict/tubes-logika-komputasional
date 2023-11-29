@@ -3,7 +3,6 @@
 :- dynamic(ownedTerritory/3). /* teritoryCode, ownerName, troopsCount */
 :- dynamic(ownedContinent/2). /* continentName, ownerName */
 
-
 /* Dummyu Insertion Of OwnedTerritory */
 % ownedTerritory(as1, berto, 3).
 % ownedTerritory(as2, berto, 3).
@@ -36,13 +35,14 @@
 % ownedTerritory(au2, metiw, 5).
 
 % /* Dummy Insertion of ownedContinent*/
-% ownedContinent(asia, berto).
-% ownedContinent(asia, matthew).
-% ownedContinent(europe, berto).
-% ownedContinent(north_america, berto).
-% ownedContinent(south_america, matthew).
-% ownedContinent(africa, berto).
-% ownedContinent(australia, berto).
+/*
+ownedContinent(asia, berto).
+ownedContinent(asia, matthew).
+ownedContinent(europe, berto).
+ownedContinent(north_america, berto).
+ownedContinent(south_america, matthew).
+ownedContinent(africa, berto).
+ownedContinent(australia, berto). */
 
 /* Continent*/
 continent(asia).
@@ -225,17 +225,17 @@ displayMap :-
     write('#           North America           #        Europe           #                 Asia                     #\n'),
     write('#                                   #                         #                                          #\n'),
     write('#       [NA1('), (ownedTerritory(na1, _, _NA1) -> integerToString(_NA1, _RNA1); _RNA1 = '000'), write(_RNA1), write(')]-[NA2('), (ownedTerritory(na2, _, _NA2) -> integerToString(_NA2, _RNA2); _RNA2 = '000'), write(_RNA2), write(')]       #                         #                                          #\n'),
-    write('-----------|         |---[NA5('), (ownedTerritory(na5, _, _NA5) -> integerToString(_NA5, _RNA5); _RNA5 = '000'), write(_RNA5), write(')----[EU1('), (ownedTerritory(eu1, _, _EU1) -> integerToString(_EU1, _REU1) ; _REU1 = '000'), print(_REU1), print(')]-[EU2('), (ownedTerritory(eu2, _, _EU2) -> integerToString(_EU2, _REU2); _REU2 = '000'), print(_REU2), print(')]---------[AS1('), (ownedTerritory(as1, _, _as1) -> integerToString(_as1, _Ras1); _Ras1 = '000'), write(_Ras1), write(')] [AS2('), (ownedTerritory(as2, _, _as2) -> integerToString(_as2, _Ras2) ; _Ras2 = '000'), write(_Ras2), write(')] [AS3(') , (ownedTerritory(as3, _, _AS3) -> integerToString(_AS3, _RAS3); _RAS3 = '000'), write(_RAS3), write(')]------\n'),
+    write('-----------|         |---[NA5('), (ownedTerritory(na5, _, _NA5) -> integerToString(_NA5, _RNA5); _RNA5 = '000'), write(_RNA5), write(')]---[EU1('), (ownedTerritory(eu1, _, _EU1) -> integerToString(_EU1, _REU1) ; _REU1 = '000'), print(_REU1), print(')]-[EU2('), (ownedTerritory(eu2, _, _EU2) -> integerToString(_EU2, _REU2); _REU2 = '000'), print(_REU2), print(')]---------[AS1('), (ownedTerritory(as1, _, _as1) -> integerToString(_as1, _Ras1); _Ras1 = '000'), write(_Ras1), write(')] [AS2('), (ownedTerritory(as2, _, _as2) -> integerToString(_as2, _Ras2) ; _Ras2 = '000'), write(_Ras2), write(')] [AS3(') , (ownedTerritory(as3, _, _AS3) -> integerToString(_AS3, _RAS3); _RAS3 = '000'), write(_RAS3), write(')]------\n'),
     write('#       [NA3('), (ownedTerritory(na3, _, _NA3) -> integerToString(_NA3, _RNA3); _RNA3 = '000'), write(_RNA3), write(')]-[NA4('), (ownedTerritory(na4, _, _NA4) -> integerToString(_NA4, _RNA4); _RNA4 = '000'), write(_RNA4), write(')]       #       |       |         #        |          |         |            #'), nl,
-    write('#          |                        #    [E3('), (ownedTerritory(eu3, _, _EU3) -> integerToString(_EU3, _REU3); _REU3 = '000'), write(_REU3), write(')]-[E4('), (ownedTerritory(eu4, _, _EU4) -> integerToString(_EU4, _REU4); _REU4 = '000'), write(_REU4),write(')]  ####     |          |         |            #'), nl, 
-    write('###########|#########################       |       |-[E5('),  (ownedTerritory(eu5, _, _EU5) -> integerToString(_EU5, _REU5); _REU5 = '000'), write(_REU5), write(')]-----[AS4('), (ownedTerritory(as4, _, _AS4) -> integerToString(_AS4, _RAS4); _RAS4 = '000'), write(_RAS4), write(')]----+------[AS5('), (ownedTerritory(as5, _, _AS5) -> integerToString(_AS5, _RAS5); _RAS5 = '000'), write(_RAS5), write(')]      #'),nl,
+    write('#          |                        #   [EU3('), (ownedTerritory(eu3, _, _EU3) -> integerToString(_EU3, _REU3); _REU3 = '000'), write(_REU3), write(')]-[EU4('), (ownedTerritory(eu4, _, _EU4) -> integerToString(_EU4, _REU4); _REU4 = '000'), write(_REU4),write(')] ####     |          |         |            #'), nl, 
+    write('###########|#########################       |       |-[EU5('),  (ownedTerritory(eu5, _, _EU5) -> integerToString(_EU5, _REU5); _REU5 = '000'), write(_REU5), write(')]----[AS4('), (ownedTerritory(as4, _, _AS4) -> integerToString(_AS4, _RAS4); _RAS4 = '000'), write(_RAS4), write(')]----+------[AS5('), (ownedTerritory(as5, _, _AS5) -> integerToString(_AS5, _RAS5); _RAS5 = '000'), write(_RAS5), write(')]      #'),nl,
     write('#          |                        ########|#######|#############                |                      #'), nl,
-    write('#       [SA1('), (ownedTerritory(sa1, _, _SA1) -> integerToString(_SA1, _RSA1); _RSA1 = '000'), write(_RSA1), write(']                   #       |       |            #                |                      #'), nl,
-    write('#          |                        #       |    [AF2('), (ownedTerritory(af2, _, _AF2) -> integerToString(_AF2, _RAF2); _RAF2 = '000'), write(_RAF2), write(')]      #              [AS6('), (ownedTerritory(as6, _, _AS6) -> integerToString(_AS6, _RAS6); _RAS6 = '000'), write(_RAS6), write(']---[AS7('), (ownedTerritory(as7, _, _as7) -> integerToString(_as7, _Ras7); _Ras7 = '000'), write(_Ras7), write(']    #'),nl,
-    write('#   |---[SA2('), (ownedTerritory(sa2, _, _sa2) -> integerToString(_sa2, _Rsa2); _Rsa2 = '000'), write(_Rsa2), write(']-------------------------[AF1('), (ownedTerritory(af1, _, _AF1) -> integerToString(_AF1, _RAF1); _RAF1 = '000'), write(_RAF1), write(']---|          #                |                      #'), nl, 
+    write('#       [SA1('), (ownedTerritory(sa1, _, _SA1) -> integerToString(_SA1, _RSA1); _RSA1 = '000'), write(_RSA1), write(')]                  #       |       |            #                |                      #'), nl,
+    write('#          |                        #       |    [AF2('), (ownedTerritory(af2, _, _AF2) -> integerToString(_AF2, _RAF2); _RAF2 = '000'), write(_RAF2), write(')]      #              [AS6('), (ownedTerritory(as6, _, _AS6) -> integerToString(_AS6, _RAS6); _RAS6 = '000'), write(_RAS6), write(')]--[AS7('), (ownedTerritory(as7, _, _as7) -> integerToString(_as7, _Ras7); _Ras7 = '000'), write(_Ras7), write(')]   #'),nl,
+    write('#   |---[SA2('), (ownedTerritory(sa2, _, _sa2) -> integerToString(_sa2, _Rsa2); _Rsa2 = '000'), write(_Rsa2), write(')]------------------------[AF1('), (ownedTerritory(af1, _, _AF1) -> integerToString(_AF1, _RAF1); _RAF1 = '000'), write(_RAF1), write(')]--|          #                |                      #'), nl, 
     write('#   |                               #               |            #################|#######################'), nl, 
-    write('#   |                               #            [AF3('), (ownedTerritory(af3, _, _AF3) -> integerToString(_AF3, _RAF3); _RAF3 = '000'), write(_RAF3), write(']       #                |                      #'), nl,
-    write('----|                               #                            #             [AU1('), (ownedTerritory(au1, _, _AU1) -> integerToString(_AU1, _RAU1); _RAU1 = '000'), write(_RAU1), write(']---[AU2('), (ownedTerritory(au2, _, _au2) -> integerToString(_au2, _Rau2); _Rau2 = '000'), write(_Rau2), write(']------'), nl,
+    write('#   |                               #            [AF3('), (ownedTerritory(af3, _, _AF3) -> integerToString(_AF3, _RAF3); _RAF3 = '000'), write(_RAF3), write(')]      #                |                      #'), nl,
+    write('----|                               #                            #             [AU1('), (ownedTerritory(au1, _, _AU1) -> integerToString(_AU1, _RAU1); _RAU1 = '000'), write(_RAU1), write(')]--[AU2('), (ownedTerritory(au2, _, _au2) -> integerToString(_au2, _Rau2); _Rau2 = '000'), write(_Rau2), write(')]-----'), nl,
     write('#                                   #                            #                                       #'), nl, 
     write('#       South America               #         Africa             #          Australia                    #'), nl, 
     write('##########################################################################################################'), nl, !.
@@ -260,8 +260,18 @@ countOwnedTerritories(Owner, Count):-
 
 /* list all continent that Owner own in Continents*/
 allOwnedContinent(Owner, Continents):-
-    findall(Continent, ownedContinent(Continent, Owner), Continents).
-
+    findall(Territory,ownedTerritory(Territory,Owner,_),TerritoryOwnList),
+    test2(TerritoryOwnList,Continents),!.
+    
+test2([], Result) :- Result = [],!.
+test2([H|T], Result) :- 
+    territoryContinent(Continent, H),
+    test2(T, Result1),
+    (member(Continent, Result1)->(
+        Result = Result1
+    );(
+        Result = [Continent | Result1]
+    )),!.
 /* count placed Soldier in Map */
 countPlacedSoldier(Owner,Count):-
     findall(Soldier, ownedTerritory(_, Owner, Soldier), SoldierList),
@@ -304,3 +314,41 @@ displayOwnTerritories([Head|Tail],Name):-
     write('Nama                 : '), write(NameTerritory),nl,
     write('Jumlah tentara       : '), write(PlacedSoldier),nl,nl,
     displayOwnTerritories(Tail,Name),!.
+
+isAllSame([], _):- !.
+isAllSame([A|B], Name):- Name == A, isAllSame(B, Name), !.
+
+listOwner([], LO):- LO = [], !.
+listOwner([A|B], LO):-
+    listOwner(B, LL),
+    ownedTerritory(A, Owner, _),
+    addEnd(LL, Owner, Out),
+    LO = Out.
+
+refreshOwnerContinent:-
+    retractall(ownedContinent(_,_)),
+    write('\nBerjalan'),
+    findall(Tera, territoryContinent(asia, Tera), ListAsia),
+    listOwner(ListAsia, OA),
+    getName(OA, 1, Fa),
+    (isAllSame(OA, Fa) -> assertz(ownedContinent(asia, Fa)) ; true),
+    findall(TerEu, territoryContinent(europe, TerEu), ListUE),
+    listOwner(ListUE, OEU),
+    getName(OEU, 1, Feu),
+    (isAllSame(OEU, Feu) -> assertz(ownedContinent(europe, Feu)) ; true),
+    findall(TerNA, territoryContinent(north_america, TerNA), ListNA),
+    listOwner(ListNA, ONA),
+    getName(ONA, 1, Fna),
+    (isAllSame(ONA, Fna) -> assertz(ownedContinent(north_america, Fna)) ; true),
+    findall(TerSA, territoryContinent(south_america, TerSA), ListSA),
+    listOwner(ListSA, OSA),
+    getName(OSA, 1, Fsa),
+    (isAllSame(OSA, Fsa) -> assertz(ownedContinent(south_america, Fsa)) ; true),
+    findall(TerAF, territoryContinent(africa, TerAF), ListAF),
+    listOwner(ListAF, OAF),
+    getName(OAF, 1, Faf),
+    (isAllSame(OAF, Faf) -> assertz(ownedContinent(africa, Faf)) ; true),
+    findall(TerAU, territoryContinent(australia, TerAU), ListAF),
+    listOwner(ListAF, OAU),
+    getName(OAU, 1, Fau),
+    (isAllSame(OAU, Fau) -> assertz(ownedContinent(australia, Fau)) ; true), !.
