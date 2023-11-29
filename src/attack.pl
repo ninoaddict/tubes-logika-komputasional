@@ -205,6 +205,7 @@ attack :-
                         setOwnedTerritory(AttackedArea, CurrName, NewY),
                         format('Tentara di wilayah ~w: ~w\n', [SelectedArea, NewX]),
                         format('Tentara di wilayah ~w: ~w\n', [AttackedArea, NewY]),
+                        retract(isAttackPossible(CurrName)),
                         (checkLose(AttackedOwner) -> 
                         (
                             (checkWin(CurrName)-> (
@@ -219,7 +220,8 @@ attack :-
                         _pipi is (TroopsNumber - SoldierToAttack),
                         setOwnedTerritory(SelectedArea, CurrName, _pipi),
                         format('Tentara di wilayah ~w: ~w\n', [SelectedArea, _pipi]),
-                        format('Tentara di wilayah ~w: ~w\n', [AttackedArea, AttackedTroopsNumber])
+                        format('Tentara di wilayah ~w: ~w\n', [AttackedArea, AttackedTroopsNumber]),
+                        retract(isAttackPossible(CurrName))
                     ))
                 ))
             );
