@@ -326,6 +326,29 @@ listOwner([A|B], LO):-
     LO = Out.
 
 refreshOwnerContinent:-
+    retractall(ownedContinent(_,_)),
+    write('\nBerjalan'),
     findall(Tera, territoryContinent(asia, Tera), ListAsia),
     listOwner(ListAsia, OA),
-    getName(OA, 1, )
+    getName(OA, 1, Fa),
+    (isAllSame(OA, Fa) -> assertz(ownedContinent(asia, Fa)) ; true),
+    findall(TerEu, territoryContinent(europe, TerEu), ListUE),
+    listOwner(ListUE, OEU),
+    getName(OEU, 1, Feu),
+    (isAllSame(OEU, Feu) -> assertz(ownedContinent(europe, Feu)) ; true),
+    findall(TerNA, territoryContinent(north_america, TerNA), ListNA),
+    listOwner(ListNA, ONA),
+    getName(ONA, 1, Fna),
+    (isAllSame(ONA, Fna) -> assertz(ownedContinent(north_america, Fna)) ; true),
+    findall(TerSA, territoryContinent(south_america, TerSA), ListSA),
+    listOwner(ListSA, OSA),
+    getName(OSA, 1, Fsa),
+    (isAllSame(OSA, Fsa) -> assertz(ownedContinent(south_america, Fsa)) ; true),
+    findall(TerAF, territoryContinent(africa, TerAF), ListAF),
+    listOwner(ListAF, OAF),
+    getName(OAF, 1, Faf),
+    (isAllSame(OAF, Faf) -> assertz(ownedContinent(africa, Faf)) ; true),
+    findall(TerAU, territoryContinent(australia, TerAU), ListAF),
+    listOwner(ListAF, OAU),
+    getName(OAU, 1, Fau),
+    (isAllSame(OAU, Fau) -> assertz(ownedContinent(australia, Fau)) ; true), !.
