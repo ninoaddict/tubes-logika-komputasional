@@ -23,6 +23,12 @@ deleteElmt([H | T], X, List) :-
     deleteElmt(T, X, A),
     List = [H|A].
 
+deleteStr([X|T], X, T).
+deleteStr([H | T], X, List) :-
+    X == H, 
+    deleteStr(T, X, A),
+    List = [H|A].
+
 min([X], X).
 min([A|B], Min):- min(B,Min1), A >= Min1,!,Min is Min1.
 min([A|B], Min):- min(B,Min1), A < Min1,!,Min is A. 
