@@ -184,14 +184,3 @@ test([H|T], Continent, Result) :-
     (
         test(T, Continent, Result)
     )),!.
-/*
-test2([], Result) :- Result = [],!.
-test2([H|T], Result) :- 
-    territoryContinent(Continent, H),
-    test2(T, Result1),
-    (member(Continent, Result1)->(
-        Result = Result1
-    );(
-        Result = [Continent | Result1]
-    )),!.
-*/
