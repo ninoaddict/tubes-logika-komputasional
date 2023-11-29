@@ -31,7 +31,6 @@ currentPlayer(X) :- player(X), !.
 
 /* bonus soldier from owned Continents priviledge */
 bonusSoldierFromContinents(Owner,ListBonus):-
-    allOwnedContinent(Owner, Continents),
     listOwnedTerritoriesInContinent(Owner,asia,ListAsia),
     listOwnedTerritoriesInContinent(Owner,europe,ListEurope),
     listOwnedTerritoriesInContinent(Owner,north_america,ListNorthA),
