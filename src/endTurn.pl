@@ -1,5 +1,6 @@
 /* a. endTurn */
 endTurn:-
+    isPlayTheGame(_),
     currentPlayer(Name),
     write('Player '), write(Name), write(' mengakhiri giliran.'),
     nl,nl,

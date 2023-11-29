@@ -1,5 +1,6 @@
 /* b. draft */
-draft(Territory, TroopsCount) :- currentPlayer(CurrPlayer), ownedTerritory(Territory, CurrPlayer , CurrentTeritoryTroops) -> 
+draft(Territory, TroopsCount) :- isPlayTheGame(_),
+                currentPlayer(CurrPlayer), ownedTerritory(Territory, CurrPlayer , CurrentTeritoryTroops) -> 
                 (unplacedSoldier(CurrPlayer, UnplacedSoldier),
                 (UnplacedSoldier > TroopsCount) -> 
                 (NewNbTroops is TroopsCount + CurrentTeritoryTroops, setOwnedTerritory(Teritory, CurrPlayer, NewNbTroops ), 

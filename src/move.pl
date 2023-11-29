@@ -1,6 +1,6 @@
 /* c. Move */
 move(Origin, Dest, X) :- 
-    isPlayTheGame,
+    isPlayTheGame(_),
     currentPlayer(_currName),
     (ownedTerritory(Origin, _currName, _X) -> (
         (ownedTerritory(Dest, _currName, _Y) -> (
