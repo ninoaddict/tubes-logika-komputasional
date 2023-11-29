@@ -3,11 +3,7 @@
 :- dynamic(player/1).           /*  */
 :- dynamic(unplacedSoldier/2).   /* playerName,  soldierCount*/
 :- dynamic(turnPlayer/2).
-nbPlayer(4).
-turnPlayer(suta,1).
-turnPlayer(mahew,2).
-turnPlayer(adril,3).
-turnPlayer(berto,4).
+
 /* setUnplacedSoldier */
 setUnplacedSoldier(PlayerName, SoldierCount) :- retract(unplacedSoldier(PlayerName, _)), assertz(unplacedSoldier(PlayerName, SoldierCount)),!.
 
@@ -91,11 +87,16 @@ checkPlayerDetail(X):-
 
 
 /* check Player Teritories */
-checkPlayerTeritories(X):-
-    isPlayTheGame(_),
+checkPlayerTerritories(X):-
+    isInit(true),
     checkInputPlayer(X,Name),
     allOwnedContinent(Name,Continents),
+    length(Continents,Count),
     write('Nama           : '), write(Name),nl,nl,
+    (Count = 0 -> 
+        write('Tidak ada wilayah Territory'),nl
+    ;   true
+    ),
     (member('asia',Continents) ->
         displayOwnContinent(Name,'asia')
     ;   write('')
@@ -137,7 +138,7 @@ checkIncomingTroops(X):-
     getElement(ListBonus,5,BonusAfrica),   
     getElement(ListBonus,6,BonusAustralia),
     sumUntil(ListBonus,5,BonusContinents),
-    Bonus = BonusContinents + BonusTerritory,
+    Bonus is BonusContinents + BonusTerritory,
     write('Nama                                 : '),write(Name),nl,
     write('Total Wilayah                        : '),write(CountTerritories),nl,
     write('Jumlah tentara tambahan dari wilayah : '),write(BonusTerritory),nl,

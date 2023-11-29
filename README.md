@@ -57,11 +57,11 @@
         <details>
           <summary><a href="#features">Features</a></summary>
           <ol>
-            <li><a href="#1. Map">Inisialisasi</a></li>
-            <li><a href="#2. Initiating">Commands</a></li>
-            <li><a href="#3. Turn">User</a></li>
-            <li><a href="#4. Wilayah">Profile</a></li>
-            <li><a href="#5. Player">Friend</a></li>
+            <li><a href="#1. Map">1. Map</a></li>
+            <li><a href="#2. Initiating">2. Initiating</a></li>
+            <li><a href="#3. Turn">3. User</a></li>
+            <li><a href="#4. Wilayah">4. Wilayah</a></li>
+            <li><a href="#5. Player">5. Player</a></li>
           <ol>
         </details>
         </li>

@@ -1,8 +1,3 @@
-pemain([Berto,Sutha,Adril,Matthew]).
-get_element(Index, Element, List) :-
-    nth0(Index, List, Element).
-
-startGame:-
-    write("Masukkan jumlah pemain: "),
-    read(JumlahPemain),
-    write("Mohon masukkan angka antara 2 - 4.").
+isIn([A|B], E, Idx):-
+    (E == A, Idx is 1, !);
+    (E \== A, isIn(B, E, IdxRes), Idx is IdxRes + 1).

@@ -153,3 +153,34 @@ listSameElements([Head|Tail],ListCompare,Result):-
         listSameElements(Tail,ListCompare,Rest)
     ;   listSameElements(Tail,ListCompare,Result)
     ).
+
+/* check if list of territory is in continent*/
+isTerritoryInContinent(TerritoryList,ContinentList):-
+    List = [],
+    test(TerritoryList,'asia',AsiaList),write(AsiaList),
+    test(TerritoryList,'europe',EuropeList),
+    test(TerritoryList,'north_america',NorthAList),
+    test(TerritoryList,'south_america',SouthAList),
+    test(TerritoryList,'africa',AfricaList),
+    test(TerritoryList,'australia',AustraliaList),
+    append(List,AsiaList,List2),
+    append(List2,EuropeList,List3),
+    append(List3,NorthAList,List4),
+    append(List4,SouthAList,List5),
+    append(List5,AfricaList,List6),
+    append(List6,AustraliaList,ContinentList),!.
+
+in_continent(Territory, Continent) :-
+    territoryContinent(Continent, Territory).
+
+test([], _, Result) :- Result = [],!.
+
+test([H|T], Continent, Result) :-
+    (territoryContinent(Continent, H) -> 
+    (
+        test(T, Continent, Res1),
+        Result = [H|Res1]
+    );
+    (
+        test(T, Continent, Result)
+    )),!.

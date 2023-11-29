@@ -35,13 +35,14 @@
 % ownedTerritory(au2, metiw, 5).
 
 % /* Dummy Insertion of ownedContinent*/
-% ownedContinent(asia, berto).
-% ownedContinent(asia, matthew).
-% ownedContinent(europe, berto).
-% ownedContinent(north_america, berto).
-% ownedContinent(south_america, matthew).
-% ownedContinent(africa, berto).
-% ownedContinent(australia, berto).
+/*
+ownedContinent(asia, berto).
+ownedContinent(asia, matthew).
+ownedContinent(europe, berto).
+ownedContinent(north_america, berto).
+ownedContinent(south_america, matthew).
+ownedContinent(africa, berto).
+ownedContinent(australia, berto). */
 
 /* Continent*/
 continent(asia).
@@ -259,8 +260,18 @@ countOwnedTerritories(Owner, Count):-
 
 /* list all continent that Owner own in Continents*/
 allOwnedContinent(Owner, Continents):-
-    findall(Continent, ownedContinent(Continent, Owner), Continents).
-
+    findall(Territory,ownedTerritory(Territory,Owner,_),TerritoryOwnList),
+    test2(TerritoryOwnList,Continents),!.
+    
+test2([], Result) :- Result = [],!.
+test2([H|T], Result) :- 
+    territoryContinent(Continent, H),
+    test2(T, Result1),
+    (member(Continent, Result1)->(
+        Result = Result1
+    );(
+        Result = [Continent | Result1]
+    )),!.
 /* count placed Soldier in Map */
 countPlacedSoldier(Owner,Count):-
     findall(Soldier, ownedTerritory(_, Owner, Soldier), SoldierList),
