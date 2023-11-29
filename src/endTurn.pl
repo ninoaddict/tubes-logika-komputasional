@@ -9,12 +9,16 @@ endTurn:-
     currentPlayer(NextName),
     riskEndBeforeTurn(LL),
     riskCard(NextName, X),
+    assertz(isAttackPossible(NextName)),
     (getIndex(LL, X, _) ->
         retract(riskCard(NextName,_)),
         retract(riskTaken(_))
         ;
         true
     ),
+    assertz(isAttackPossible(NextName)),
+    retract(moveCount(NextName,_)),
+    assertz(moveCount(NextName,3)),
     write('Sekarang giliran Player '), write(NextName), write('!'),
     nl,
     bonusSoldierFromContinents(NextName, ListBonus),

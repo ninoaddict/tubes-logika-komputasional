@@ -168,6 +168,7 @@ intiateFirstTurn:-
     format('Player ~w mendapatkan ~d tentara tambahan.\n', [Name, Bonus]),
     unplacedSoldier(Name, Troops),
     NewTroops is Troops+Bonus,
+    assertz(isAttackPossible(Name)),
     setUnplacedSoldier(Name, NewTroops),!.
 
 handleListTerritory(Res):-
