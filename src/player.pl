@@ -142,7 +142,7 @@ checkIncomingTroops(X):-
     getElement(ListBonus,5,BonusAfrica),   
     getElement(ListBonus,6,BonusAustralia),
     sumUntil(ListBonus,5,BonusContinents),
-    Bonus = BonusContinents + BonusTerritory,
+    Bonus is BonusContinents + BonusTerritory,
     write('Nama                                 : '),write(Name),nl,
     write('Total Wilayah                        : '),write(CountTerritories),nl,
     write('Jumlah tentara tambahan dari wilayah : '),write(BonusTerritory),nl,

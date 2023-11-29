@@ -1,7 +1,7 @@
 /* FACTS */
 /* Dynamic Variable */
 :- dynamic(ownedTerritory/3). /* teritoryCode, ownerName, troopsCount */
-
+:- dynamic(ownedContinent/2).
 
 /* Dummyu Insertion Of OwnedTerritory */
 % ownedTerritory(as1, berto, 3).
@@ -35,13 +35,14 @@
 % ownedTerritory(au2, metiw, 5).
 
 % /* Dummy Insertion of ownedContinent*/
+/*
 ownedContinent(asia, berto).
 ownedContinent(asia, matthew).
 ownedContinent(europe, berto).
 ownedContinent(north_america, berto).
 ownedContinent(south_america, matthew).
 ownedContinent(africa, berto).
-ownedContinent(australia, berto).
+ownedContinent(australia, berto). */
 
 /* Continent*/
 continent(asia).
