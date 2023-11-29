@@ -25,5 +25,5 @@ move(Origin, Dest, X) :-
             (nl, write(_currName), write(' tidak memiliki wilayah '), write(Dest), write('.\n'), write('pemindahan dibatalkan'), nl)), !
         );  
         (nl, write(_currName), write(' tidak memiliki wilayah '), write(Origin), write('.\n'), write('pemindahan dibatalkan'), nl)), !
-    );
-    write('Player sudah melakukan move lebih dari 3'),!.
+    ; write('Player sudah melakukan move lebih dari 3')
+    ), !.
