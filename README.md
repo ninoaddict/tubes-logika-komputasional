@@ -53,19 +53,19 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
-        <li>
+      </ul>
+    </li>
+    <li>
         <details>
           <summary><a href="#features">Features</a></summary>
           <ol>
-            <li><a href="#1. Map">1. Map</a></li>
-            <li><a href="#2. Initiating">2. Initiating</a></li>
-            <li><a href="#3. Turn">3. User</a></li>
-            <li><a href="#4. Wilayah">4. Wilayah</a></li>
-            <li><a href="#5. Player">5. Player</a></li>
-          <ol>
+            <li><a href="#map">Map</a></li>
+            <li><a href="#initiating">Initiating</a></li>
+            <li><a href="#turn">User</a></li>
+            <li><a href="#wilayah">Wilayah</a></li>
+            <li><a href="#player">Player</a></li>
+          </ol>
         </details>
-        </li>
-      </ul>
     </li>
     <li><a href="#contributing">Contributing</a></li>
   </ol>
@@ -159,7 +159,7 @@ Setiap wilayah memiliki atributnya sendiri.
 Daftar perintah: 
 - `checkLocationDetail(territoryCode).` : Menampilkan detail dari wilayah dengan kode territoryCode. Detail yang ditampilkan adalah kode wilayah, nama wilayah, pemilik, total tentara, dan semua tetangga wilayah yang dipilih.
 
-### 5. Player : 
+### 5. Player  
 Setiap pemain memiliki atributnya sendiri.  
 - `checkPlayerDetail(playerCode)` : Menampilkan detail dari player dengan kode playerCode. Detail yang ditampilkan adalah nama pemain, benua yang dikuasai, total wilayah, total tentara aktif, dan total tentara tambahan. 
 - `checkPlayerTerritories(playerCode).` : Menampilkan setiap wilayah yang dikuasai oleh player. 
