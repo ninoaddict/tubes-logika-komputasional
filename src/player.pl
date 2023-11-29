@@ -91,11 +91,16 @@ checkPlayerDetail(X):-
 
 
 /* check Player Teritories */
-checkPlayerTeritories(X):-
+checkPlayerTerritories(X):-
     isInit(true),
     checkInputPlayer(X,Name),
     allOwnedContinent(Name,Continents),
+    length(Continents,Count),
     write('Nama           : '), write(Name),nl,nl,
+    (Count = 0 -> 
+        write('Tidak ada wilayah Territory'),nl
+    ;   true
+    ),
     (member('asia',Continents) ->
         displayOwnContinent(Name,'asia')
     ;   write('')
