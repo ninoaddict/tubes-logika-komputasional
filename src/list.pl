@@ -38,7 +38,7 @@ isIn([A|B], E, Idx):-
     (E \== A, isIn(B, E, IdxRes), Idx is IdxRes + 1).
 
 getName([A|B], I, Elmt):- 
-    I =:= 1, 
+    I =:= 1,
     Elmt = A,!; I =\= 1, 
     I1 is I-1,
     getName(B,I1,Elmt).

@@ -304,5 +304,17 @@ displayOwnTerritories([Head|Tail],Name):-
     write('Jumlah tentara       : '), write(PlacedSoldier),nl,nl,
     displayOwnTerritories(Tail,Name),!.
 
+isAllSame([], _):- !.
+isAllSame([A|B], Name):- Name == A, isAllSame(B, Name), !.
+
+listOwner([], LO):- LO = [], !.
+listOwner([A|B], LO):-
+    listOwner(B, LL),
+    ownedTerritory(A, Owner, _),
+    addEnd(LL, Owner, Out),
+    LO = Out.
+
 refreshOwnerContinent:-
-    
+    findall(Tera, territoryContinent(asia, Tera), ListAsia),
+    listOwner(ListAsia, OA),
+    getName(OA, 1, )

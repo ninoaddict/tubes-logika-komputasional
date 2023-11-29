@@ -16,10 +16,15 @@ acquisitionTerritory(Terr):-
         format('\nWilayah ~w memang milik ~w.\n', [Terr, Name])
     );
     (   
-        retract(ownedTerritory(Terr,_,Num)),
+        retract(ownedTerritory(Terr,Enemy,Num)),
         assertz(ownedTerritory(Terr, Name, Num)),
         write('\nCheat success:\n'),
-        format('Wilayah ~w telah menjadi milik ~w.\n', [Terr, Name])
+        format('Wilayah ~w telah menjadi milik ~w.\n', [Terr, Name]),
+        (checkLose(Enemy) -> (
+            currentPlayer(Neme),
+            (checkWin(Neme) -> true; true)
+        );
+        true)
     )),!.
 
 pickRiskCard(X):-
