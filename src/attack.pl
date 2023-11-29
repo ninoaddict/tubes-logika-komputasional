@@ -221,7 +221,7 @@ attack :-
                         setOwnedTerritory(SelectedArea, CurrName, _pipi),
                         format('Tentara di wilayah ~w: ~w\n', [SelectedArea, _pipi]),
                         format('Tentara di wilayah ~w: ~w\n', [AttackedArea, AttackedTroopsNumber]),
-                        retract(isAttackPossible(CurrName)),
+                        retract(isAttackPossible(CurrName))
                     ))
                 ))
             );
