@@ -220,12 +220,11 @@ adjacentList(au2, [au1, sa2]).
 
 
 displayMap :- 
-    (isSpreadSoldier(_);isPlayTheGame(_)),
     nl,
     write('##########################################################################################################\n'),
     write('#           North America           #        Europe           #                 Asia                     #\n'),
     write('#                                   #                         #                                          #\n'),
-    write('#       [NA1('), ownedTerritory(na1, _, _NA1), integerToString(_NA1, _RNA1), write(_RNA1), write(')]-[NA2('), ownedTerritory(na2, _, _NA2), integerToString(_NA2, _RNA2), write(_RNA2), write(')]       #                         #                                          #\n'),
+    write('#       [NA1('), (ownedTerritory(na1, _, _NA1) -> integerToString(_NA1, _RNA1); _RNA1 = '000'), write(_RNA1), write(')]-[NA2('), ownedTerritory(na2, _, _NA2), integerToString(_NA2, _RNA2), write(_RNA2), write(')]       #                         #                                          #\n'),
     write('-----------|         |---[NA5('), ownedTerritory(na5, _, _NA5), integerToString(_NA5, _RNA5), write(_RNA5), write(')----[EU1('), ownedTerritory(eu1, _, _EU1), integerToString(_EU1, _REU1), print(_REU1), print(')]-[EU2('), ownedTerritory(eu2, _, _EU2), integerToString(_EU2, _REU2), print(_REU2), print(')]---------[AS1('), ownedTerritory(as1, _, _as1), integerToString(_as1, _Ras1), write(_Ras1), write(')] [AS2('), ownedTerritory(as2, _, _as2), integerToString(_as2, _Ras2), write(_Ras2), write(')] [AS3(') , ownedTerritory(as3, _, _AS3), integerToString(_AS3, _RAS3), write(_RAS3), write(')]------\n'),
     write('#       [NA3('), ownedTerritory(na3, _, _NA3), integerToString(_NA3, _RNA3), write(_RNA3), write(')]-[NA4('), ownedTerritory(na4, _, _NA4), integerToString(_NA4, _RNA4), write(_RNA4), write(')]       #       |       |         #        |          |         |            #'), nl,
     write('#          |                        #    [E3('), ownedTerritory(eu3, _, _EU3), integerToString(_EU3, _REU3), write(_REU3), write(')]-[E4('), ownedTerritory(eu4, _, _EU4), integerToString(_EU4, _REU4), write(_REU4),write(')]  ####     |          |         |            #'), nl, 
