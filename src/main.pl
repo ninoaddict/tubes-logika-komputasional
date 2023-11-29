@@ -10,3 +10,4 @@
 :- include('./teritory.pl').
 :- include('./util.pl').
 :- include('./endTurn.pl').
+:- include('./cheat.pl').

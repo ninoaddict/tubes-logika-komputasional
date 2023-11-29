@@ -5,6 +5,7 @@
 :- dynamic(isTerritoryPhase/1).
 :- dynamic(isPlayTheGame/1).
 :- dynamic(isSpreadSoldier/1).
+:- dynamic(wasNotTaken/1).
 
 startGame :-
     \+isInit(_),
@@ -56,6 +57,7 @@ startGame :-
     format('Setiap pemain mendapatkan ~d tentara.\n', [Count]),
     format('\nGiliran ~w untuk memilih wilayahnya.\n', [CurP]),
     assertz(isInit(true)),
+    displayMap,
     assertz(isTerritoryPhase(true)),
     retractall(listDice(_)), retractall(traversal(_)),!.
 
@@ -71,9 +73,11 @@ takeLocation(Terr) :-
             XX is X -1,
             setUnplacedSoldier(Name, XX),
             retract(player(Nm)),
-            assertz(player(Nm))
+            assertz(player(Nm)),
+            retractall(wasNotTaken(_))
     ;
-        ownedTerritory(Terr,_,_),write('\nWilayah sudah dikuasai. Tidak bisa mengambil.\n')
+        ownedTerritory(Terr,_,_),write('\nWilayah sudah dikuasai. Tidak bisa mengambil.\n'),
+        assertz(wasNotTaken(true))
     ),
     currentPlayer(Cpl),
     (
@@ -82,9 +86,11 @@ takeLocation(Terr) :-
             assertz(isSpreadSoldier(true)),
             write('\nSeluruh wilayah telah diambil pemain.\n'),
             write('Memulai pembagian sisa tentara.\n'),
-            format('Giliran ~w untuk meletakkan tentaranya.\n', [Cpl])
+            format('Giliran ~w untuk meletakkan tentaranya.\n', [Cpl]),
+            displayMap
             ;
-            format('\nGiliran ~w untuk memilih wilayahnya.\n', [Cpl])
+            format('\nGiliran ~w untuk memilih wilayahnya.\n', [Cpl]),
+            (\+wasNotTaken(_) -> displayMap, retractall(wasNotTaken(_)); true)
     ),
     !.
 
