@@ -33,6 +33,44 @@ checkWin(Player) :-
 /* Access the front name of the queue*/
 currentPlayer(X) :- player(X), !.
 
+/* bonus soldier from owned Continents priviledge */
+bonusSoldierFromContinents(Owner,ListBonus):-
+    allOwnedContinent(Owner, Continents),
+    (member(asia,Continents) ->
+        BonusAsia = 5
+    ;   BonusAsia = 0
+    ),
+    (member(europe, Continents) ->
+        BonusEurope = 3
+    ;   BonusEurope = 0
+    ),
+    (member(north_america, Continents) ->
+        BonusNorthAmerica = 3
+    ;   BonusNorthAmerica = 0
+    ),
+    (member(south_america, Continents) ->
+        BonusSouthAmerica = 2
+    ;   BonusSouthAmerica = 0
+    ),
+    (member(africa, Continents) ->
+        BonusAfrica = 2
+    ;   BonusAfrica = 0
+    ),
+    (member(australia, Continents) ->
+        BonusAustralia = 1
+    ;   BonusAustralia = 0
+    ),
+    appendList([BonusAsia,BonusEurope,BonusNorthAmerica,BonusSouthAmerica,BonusAfrica],BonusAustralia,ListBonus),!.
+
+/* bonus soldier from sum Territory owned */
+bonusSoldierFromTerritory(Owner,Bonus):-
+    countOwnedTerritories(Owner, Count),
+    (Count mod 2 =:= 0 ->
+        Bonus is Count // 2
+    ;   Bonus is (Count - 1 )// 2
+    ),!.
+
+
 /* check Player Detail */
 checkPlayerDetail(X):-
     checkInputPlayer(X, Name),
@@ -89,16 +127,16 @@ checkIncomingTroops(X):-
     countOwnedTerritories(Name,CountTerritories),
     bonusSoldierFromTerritory(Name,BonusTerritory),
     bonusSoldierFromContinents(Name,ListBonus),
-    getElement(ListBonus,0,BonusAsia),   
-    getElement(ListBonus,1,BonusEurope),   
-    getElement(ListBonus,2,BonusNorthAmerica),   
-    getElement(ListBonus,3,BonusSouthAmerica),   
-    getElement(ListBonus,4,BonusAfrica),   
-    getElement(ListBonus,5,BonusAustralia),
+    getElement(ListBonus,1,BonusAsia),   
+    getElement(ListBonus,2,BonusEurope),   
+    getElement(ListBonus,3,BonusNorthAmerica),   
+    getElement(ListBonus,4,BonusSouthAmerica),   
+    getElement(ListBonus,5,BonusAfrica),   
+    getElement(ListBonus,6,BonusAustralia),
     sumUntil(ListBonus,5,BonusContinents),
     Bonus = BonusContinents + BonusTerritory,
     write('Nama                                 : '),write(Name),nl,
-    write('Total Wilayah                        : '),write(CountTerritory),nl,
+    write('Total Wilayah                        : '),write(CountTerritories),nl,
     write('Jumlah tentara tambahan dari wilayah : '),write(BonusTerritory),nl,
     (BonusAsia =\= 0 -> 
         write('Bonus benua asia                     : '),write(BonusAsia),nl

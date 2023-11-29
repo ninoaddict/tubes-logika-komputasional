@@ -1,3 +1,4 @@
+/* c. Move */
 move(Origin, Dest, X) :- 
     isPlayTheGame,
     currentPlayer(_currName),
