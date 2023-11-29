@@ -1,12 +1,12 @@
 /* This is the main file*/
-:- include('./map.pl').
-:- include('./player.pl').
-:- include('./list.pl').
-:- include('./risk.pl').
-:- include('./endTurn.pl').
-:- include('./teritory.pl').
-:- include('./draft.pl').
-:- include('./move.pl').
-:- include('./util.pl').
 :- include('./attack.pl').
+:- include('./draft.pl').
 :- include('./init.pl').
+:- include('./list.pl').
+:- include('./map.pl').
+:- include('./move.pl').
+:- include('./player.pl').
+:- include('./risk.pl').
+:- include('./teritory.pl').
+:- include('./util.pl').
+:- include('./endTurn.pl').

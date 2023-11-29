@@ -53,7 +53,7 @@ readSelectedArea(Area, Owner, TroopsNumber) :-
     read(SelectedArea), nl,
     ((ownedTerritory(SelectedArea, Owner, TN)) -> (
         Area = SelectedArea,
-        TroopsNumber = TN,!
+        TroopsNumber is TN,!
     );
     (
         write('Daerah tidak valid. Silahkan input kembali.\n\n'),
@@ -63,8 +63,8 @@ readSelectedArea(Area, Owner, TroopsNumber) :-
 readNumberOfTroops(TroopsNumber, SolNum) :- 
     write('Masukkan banyak tentara yang akan bertempur: '),
     read(SoldierToAttack), nl,
-    ((SoldierToAttack =< TroopsNumber, SoldierToAttack > 0) -> (
-        SolNum = SoldierToAttack,!
+    ((SoldierToAttack < TroopsNumber, SoldierToAttack > 0) -> (
+        SolNum is SoldierToAttack,!
     );
     (
         write('Banyak tentara tidak valid. Silahkan input kembali.\n\n'),
@@ -84,7 +84,7 @@ readAttackedArea(Len, NeighbouringArea, Owner, AttackedArea) :-
             readAttackedArea(Len, NeighbouringArea, Owner, AttackedArea)
         );
         (
-            AttackedArea is Area
+            AttackedArea = Area
         ))
     );
     (
@@ -111,7 +111,7 @@ rollAttackDice(Index, N, WildCard, Sum) :-
         X is 6,
         Idx is Index + 1,
         format('Dadu ~w: ~w', [Idx, X]), nl, 
-        rollAttackDice(Idx, N, Sum1),
+        rollAttackDice(Idx, N, WildCard, Sum1),
         Sum is Sum1 + X, !
     );
     (WildCard =:= 5) ->
@@ -119,21 +119,21 @@ rollAttackDice(Index, N, WildCard, Sum) :-
         X is 1,
         Idx is Index + 1,
         format('Dadu ~w: ~w', [Idx, X]), nl, 
-        rollAttackDice(Idx, N, Sum1),
+        rollAttackDice(Idx, N, WildCard,Sum1),
         Sum is Sum1 + X, !
     );
     (
         rollDice(X),
         Idx is Index + 1,
         format('Dadu ~w: ~w', [Idx, X]), nl, 
-        rollAttackDice(Idx, N, Sum1),
+        rollAttackDice(Idx, N, WildCard, Sum1),
         Sum is Sum1 + X, !
     )),!.
     
 
 /* Rule to attack */
 attack :- 
-    isPlayTheGame,
+    isPlayTheGame(_),
     currentPlayer(CurrName),
     (isAttackPossible(CurrName) -> (
         write('\nSekarang giliran Player '), write(CurrName), write(' menyerang.\n\n'),
@@ -159,10 +159,6 @@ attack :-
                 ownedTerritory(AttackedArea, AttackedOwner, AttackedTroopsNumber),
                 getRiskCard(CurrName, AttackerRisk),
                 getRiskCard(AttackedOwner, DefenderRisk),
-                ((AttackerRisk =:= 2) -> format('Tentara ~w dalam pengaruh SUPER SOLDIER SERUM.\n\n', [CurrName])),
-                ((DefenderRisk =:= 2) -> format('Tentara ~w dalam pengaruh SUPER SOLDIER SERUM.\n\n', [AttackedOwner])),
-                ((AttackerRisk =:= 5) -> format('Tentara ~w dalam pengaruh DISEASE OUTBREAK.\n\n', [CurrName])),
-                ((DefenderRisk =:= 5) -> format('Tentara ~w dalam pengaruh DISEASE OUTBREAK.\n\n', [AttackedOwner])),
                 write('Perang telah dimulai.\n'),
                 format('Player ~w\n', [CurrName]),
                 rollAttackDice(0, SoldierToAttack, AttackerRisk, Sum1),
