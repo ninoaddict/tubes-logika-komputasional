@@ -5,13 +5,16 @@ writeNeighbours([H|T]) :-
     territoryName(H, SlangName), format('~w, ', [SlangName]), writeNeighbours(T).
 
 checkLocationDetail(Teritory) :- 
-            isPlayTheGame(_),
-            ownedTerritory(Teritory, Owner, NbTroops), 
+            isInit(true),
             format('Kode            : ~w',[Teritory]), nl,
             territoryName(Teritory, Name),
             format('Nama            : ~w',[Name] ),nl,
-            format('Pemilik         : ~w',[Owner]), nl,
-            format('Total Tentara   : ~w',[NbTroops]), nl,
+            (ownedTerritory(Teritory, Owner, NbTroops) ->
+                format('Pemilik         : ~w',[Owner]), nl,
+                format('Total Tentara   : ~w',[NbTroops]), nl
+            ;   write('Pemilik         : Tidak ada'),nl,
+                write('Total Tentara   : 0'),nl
+            ),
             adjacentList(Teritory, NeighbourList), 
             write('Tetangga        : '), writeNeighbours(NeighbourList), !.
 
