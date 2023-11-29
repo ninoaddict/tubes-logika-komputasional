@@ -4,6 +4,8 @@ endTurn:-
     currentPlayer(Name),
     write('\nPlayer '), write(Name), write(' mengakhiri giliran.'),
     nl,nl,
+    retract(player(Pop)),
+    assertz(player(Pop)),
     currentPlayer(NextName),
     riskEndBeforeTurn(LL),
     (isAttackPossible(NextName) -> true; assertz(isAttackPossible(NextName))),
@@ -40,7 +42,7 @@ endTurn:-
     ;
         write('Player '), write(NextName), write(' mendapatkan '),
         write(Bonus),
-        write('tentara tambahan.'),
+        write(' tentara tambahan.'),
         unplacedSoldier(NextName, Troops),
         NewTroops is Troops+Bonus,
         setUnplacedSoldier(NextName,NewTroops),

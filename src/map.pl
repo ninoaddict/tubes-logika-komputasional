@@ -328,4 +328,4 @@ listOwner([A|B], LO):-
 refreshOwnerContinent:-
     findall(Tera, territoryContinent(asia, Tera), ListAsia),
     listOwner(ListAsia, OA),
-    getName(OA, 1, )
+    getName(OA, 1, L),!.
