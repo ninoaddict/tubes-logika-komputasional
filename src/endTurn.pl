@@ -16,7 +16,8 @@ endTurn:-
         true
     ),
     assertz(isAttackPossible(NextName)),
-    assertz(MoveCount(NextName,3)),
+    retract(moveCount(NextName,_)),
+    assertz(moveCount(NextName,3)),
     write('Sekarang giliran Player '), write(NextName), write('!'),
     nl,
     bonusSoldierFromContinents(NextName, ListBonus),
