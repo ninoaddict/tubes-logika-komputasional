@@ -8,6 +8,7 @@ endTurn:-
     currentPlayer(NextName),
     riskEndBeforeTurn(LL),
     riskCard(NextName, X),
+    assertz(isAttackPossible(NextName)),
     (getIndex(LL, X, _) ->
         retract(riskCard(NextName,_)),
         retract(riskTaken(_))

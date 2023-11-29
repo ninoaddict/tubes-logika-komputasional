@@ -133,7 +133,7 @@ rollAttackDice(Index, N, WildCard, Sum) :-
 
 /* Rule to attack */
 attack :- 
-    isPlayTheGame,
+    isPlayTheGame(_),
     currentPlayer(CurrName),
     (isAttackPossible(CurrName) -> (
         write('\nSekarang giliran Player '), write(CurrName), write(' menyerang.\n\n'),

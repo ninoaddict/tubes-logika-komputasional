@@ -220,6 +220,7 @@ adjacentList(au2, [au1, sa2]).
 
 
 displayMap :- 
+    (isSpreadSoldier(_);isPlayTheGame(_)),
     nl,
     write('##########################################################################################################\n'),
     write('#           North America           #        Europe           #                 Asia                     #\n'),
