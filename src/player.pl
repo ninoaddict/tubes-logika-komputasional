@@ -32,47 +32,41 @@ currentPlayer(X) :- player(X), !.
 /* bonus soldier from owned Continents priviledge */
 bonusSoldierFromContinents(Owner,ListBonus):-
     allOwnedContinent(Owner, Continents),
-    (listOwnedTerritoriesInContinent(Owner,asia,ListAsia),
-        length(ListAsia,CountAsia),
-        (CountAsia =:= 7 ->
-            BonusAsia = 5
-        ;   BonusAsia = 0
-        ),
+    listOwnedTerritoriesInContinent(Owner,asia,ListAsia),
+    listOwnedTerritoriesInContinent(Owner,europe,ListEurope),
+    listOwnedTerritoriesInContinent(Owner,north_america,ListNorthA),
+    listOwnedTerritoriesInContinent(Owner,south_america,ListSouthA),
+    listOwnedTerritoriesInContinent(Owner,africa,ListAfrica),
+    listOwnedTerritoriesInContinent(Owner,australia,ListAustralia),
+    length(ListAsia,CountAsia),
+    length(ListEurope,CountEurope),
+    length(ListNorthA,CountNorthA),
+    length(ListSouthA,CountSouthA),
+    length(ListAfrica,CountAfrica),
+    length(ListAustralia,CountAustralia),
+    (CountAsia =:= 7 ->
+        BonusAsia = 5
+    ;   BonusAsia = 0
     ),
-    (listOwnedTerritoriesInContinent(Owner,europe,ListEurope),
-        length(ListEurope,CountEurope),
-        (CountEurope =:= 5 ->
-            BonusEurope = 3
-        ;   BonusEurope = 0
-        ),
+    (CountEurope =:= 5 ->
+        BonusEurope = 3
+    ;   BonusEurope = 0
     ),
-    (   listOwnedTerritoriesInContinent(Owner,north_america,ListNorthA),
-        length(ListNorthA,CountNorthA),
-        (CountNorthA =:= 5 ->
-            BonusNorthAmerica = 3
-        ;   BonusNorthAmerica = 0
-        ),
+    (CountNorthA =:= 5 ->
+        BonusNorthAmerica = 3
+    ;   BonusNorthAmerica = 0
     ),
-    (   listOwnedTerritoriesInContinent(Owner,south_america,ListSouthA),
-        length(ListSouthA,CountSouthA),
-        (CountSouthA =:= 2 ->
-            BonusSouthAmerica = 5
-        ;   BonusSouthAmerica = 0
-        ),
+    (CountSouthA =:= 2 ->
+        BonusSouthAmerica = 5
+    ;   BonusSouthAmerica = 0
     ),
-    (   listOwnedTerritoriesInContinent(Owner,africa,ListAfrica),
-        length(ListAfrica,CountAfrica),
-        (CountAfrica =:= 3 ->
-            BonusAfrica = 2
-        ;   BonusAfrica = 0
-        ),
+    (CountAfrica =:= 3 ->
+        BonusAfrica = 2
+    ;   BonusAfrica = 0
     ),
-    (   listOwnedTerritoriesInContinent(Owner,australia,ListAustralia),
-        length(ListAustralia,CountAustralia),
-        (CountAustralia =:= 2 ->
-            BonusAustralia = 1
-        ;   BonusAustralia = 0
-        ),
+    (CountAustralia =:= 2 ->
+        BonusAustralia = 1
+    ;   BonusAustralia = 0
     ),
     appendList([BonusAsia,BonusEurope,BonusNorthAmerica,BonusSouthAmerica,BonusAfrica],BonusAustralia,ListBonus),!.
 
