@@ -25,7 +25,7 @@ deleteElmt([H | T], X, List) :-
 
 deleteStr([X|T], X, T).
 deleteStr([H | T], X, List) :-
-    X == H, 
+    X \== H, 
     deleteStr(T, X, A),
     List = [H|A].
 
