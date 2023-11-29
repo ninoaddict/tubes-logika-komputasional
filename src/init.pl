@@ -173,6 +173,7 @@ intiateFirstTurn:-
     Bonus is BonusContinents + BonusTerritory,
     format('Player ~w mendapatkan ~d tentara tambahan.\n', [Name, Bonus]),
     unplacedSoldier(Name, Troops),
+    displayMap,
     NewTroops is Troops+Bonus,
     assertz(isAttackPossible(Name)),
     setUnplacedSoldier(Name, NewTroops),!.

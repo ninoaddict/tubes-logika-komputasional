@@ -1,7 +1,7 @@
 /* FACTS */
 /* Dynamic Variable */
 :- dynamic(ownedTerritory/3). /* teritoryCode, ownerName, troopsCount */
-
+:- dynamic(ownedContinent/2). /* continentName, ownerName */
 
 /* Dummyu Insertion Of OwnedTerritory */
 % ownedTerritory(as1, berto, 3).
@@ -303,3 +303,6 @@ displayOwnTerritories([Head|Tail],Name):-
     write('Nama                 : '), write(NameTerritory),nl,
     write('Jumlah tentara       : '), write(PlacedSoldier),nl,nl,
     displayOwnTerritories(Tail,Name),!.
+
+refreshOwnerContinent:-
+    

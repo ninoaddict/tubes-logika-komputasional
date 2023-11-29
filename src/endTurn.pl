@@ -2,22 +2,22 @@
 endTurn:-
     isPlayTheGame(_),
     currentPlayer(Name),
-    write('Player '), write(Name), write(' mengakhiri giliran.'),
+    write('\nPlayer '), write(Name), write(' mengakhiri giliran.'),
     nl,nl,
-    retract(queueName(Name)),
-    assertz(queueName(Name)),
     currentPlayer(NextName),
     riskEndBeforeTurn(LL),
-    riskCard(NextName, X),
-    assertz(isAttackPossible(NextName)),
-    (getIndex(LL, X, _) ->
-        retract(riskCard(NextName,_)),
-        retract(riskTaken(_))
-        ;
+    (isAttackPossible(NextName) -> true; assertz(isAttackPossible(NextName))),
+    (riskCard(NextName, X) -> (
+        (getIndex(LL, X, _) ->
+            retract(riskCard(NextName,_)),
+            retract(riskTaken(_))
+            ;
+            true
+        )
+    );(
         true
-    ),
-    assertz(isAttackPossible(NextName)),
-    retract(moveCount(NextName,_)),
+    )),
+    (moveCount(NextName,_) -> retract(moveCount(NextName, _)); true),
     assertz(moveCount(NextName,3)),
     write('Sekarang giliran Player '), write(NextName), write('!'),
     nl,
@@ -45,4 +45,4 @@ endTurn:-
         NewTroops is Troops+Bonus,
         setUnplacedSoldier(NextName,NewTroops),
         nl
-    ),!.
+    ),displayMap,!.
