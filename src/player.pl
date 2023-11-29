@@ -73,6 +73,7 @@ bonusSoldierFromTerritory(Owner,Bonus):-
 
 /* check Player Detail */
 checkPlayerDetail(X):-
+    isPlayTheGame(_),
     checkInputPlayer(X, Name),
     allOwnedContinent(Name,Continents), 
     countOwnedTerritories(Name, TerritoryOwn),
@@ -91,6 +92,7 @@ checkPlayerDetail(X):-
 
 /* check Player Teritories */
 checkPlayerTeritories(X):-
+    isPlayTheGame(_),
     checkInputPlayer(X,Name),
     allOwnedContinent(Name,Continents),
     write('Nama           : '), write(Name),nl,nl,
@@ -123,6 +125,7 @@ checkPlayerTeritories(X):-
 
 /* check Incoming Troops Detail*/
 checkIncomingTroops(X):-
+    isPlayTheGame(_),
     checkInputPlayer(X, Name),
     countOwnedTerritories(Name,CountTerritories),
     bonusSoldierFromTerritory(Name,BonusTerritory),

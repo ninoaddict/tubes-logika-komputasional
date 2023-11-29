@@ -5,6 +5,7 @@ writeNeighbours([H|T]) :-
     territoryName(H, SlangName), format('~w, ', [SlangName]), writeNeighbours(T).
 
 checkLocationDetail(Teritory) :- 
+            isPlayTheGame(_),
             ownedTerritory(Teritory, Owner, NbTroops), 
             format('Kode            : ~w',[Teritory]), nl,
             territoryName(Teritory, Name),
