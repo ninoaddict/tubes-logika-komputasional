@@ -12,7 +12,7 @@ getElementNeighbouringArea([H|T], Owner, Idx, Elmt) :-
             getElementNeighbouringArea(T, Owner, Idx, Elmt)
         );
         (
-            Elmt = A
+            Elmt = H
         ))
     );
     (
@@ -26,25 +26,25 @@ getElementNeighbouringArea([H|T], Owner, Idx, Elmt) :-
         )) 
     )),!.
 
-printNeighbouringArea([], _, Owner).
+printNeighbouringArea([], _, _).
 printNeighbouringArea([H|T], X, Owner) :-
-    (OwnedTerritory(H, Owner, _) -> 
+    (ownedTerritory(H, Owner, _) -> 
     (
         printNeighbouringArea(T, X, Owner)
     );
     (
         format('~w. ~w', [X, H]), nl,
         _X is X + 1,
-        printNeighbouringArea(T, _X, Owner),!.
+        printNeighbouringArea(T, _X, Owner)
     )),!.
 
-NeighbouringAreaLength([], Owner, X) :- X is 0, !.
-NeighbouringAreaLength([H|T], Owner, X) :- 
-    (OwnedTerritory(H, Owner, _) -> (
-        NeighbouringAreaLength(T, Owner, X)
+neighbouringAreaLength([], _, X) :- X is 0, !.
+neighbouringAreaLength([H|T], Owner, X) :- 
+    (ownedTerritory(H, Owner, _) -> (
+        neighbouringAreaLength(T, Owner, X)
     );
     (
-        NeighbouringAreaLength(T, Owner, X1),
+        neighbouringAreaLength(T, Owner, X1),
         X is X1 + 1
     )),!.
 
@@ -89,7 +89,7 @@ readAttackedArea(Len, NeighbouringArea, Owner, AttackedArea) :-
     );
     (
         write('Input tidak valid. Silahkan input kembali.\n\n'),
-        readAttackedArea(Len, Choice)
+        readAttackedArea(Len, NeighbouringArea, Owner, AttackedArea)
     )),!.
 
 readStayingTroops(Len, Area, Choice) :- 
@@ -104,7 +104,7 @@ readStayingTroops(Len, Area, Choice) :-
     )),!.
 
 
-rollAttackDice(Index, N, WildCard, 0):- Index =:= N,!.
+rollAttackDice(Index, N, _, 0):- Index =:= N,!.
 rollAttackDice(Index, N, WildCard, Sum) :- 
     ((WildCard =:= 2) -> 
     (
@@ -112,7 +112,7 @@ rollAttackDice(Index, N, WildCard, Sum) :-
         Idx is Index + 1,
         format('Dadu ~w: ~w', [Idx, X]), nl, 
         rollAttackDice(Idx, N, Sum1),
-        Sum is Sum1 + X, !.
+        Sum is Sum1 + X, !
     );
     (WildCard =:= 5) ->
     (
@@ -120,14 +120,14 @@ rollAttackDice(Index, N, WildCard, Sum) :-
         Idx is Index + 1,
         format('Dadu ~w: ~w', [Idx, X]), nl, 
         rollAttackDice(Idx, N, Sum1),
-        Sum is Sum1 + X, !.
+        Sum is Sum1 + X, !
     );
     (
         rollDice(X),
         Idx is Index + 1,
         format('Dadu ~w: ~w', [Idx, X]), nl, 
         rollAttackDice(Idx, N, Sum1),
-        Sum is Sum1 + X, !.
+        Sum is Sum1 + X, !
     )),!.
     
 
@@ -146,7 +146,7 @@ attack :-
         (
             readNumberOfTroops(TroopsNumber, SoldierToAttack),
             displayMap, nl, nl,
-            NeighbouringAreaLength(NeighbouringArea, CurrName, Len),
+            neighbouringAreaLength(NeighbouringArea, CurrName, Len),
             ((Len =:= 0)->
             (
                 write('Maaf anda tidak bisa menyerang daerah mana pun karena tidak ada daerah yang tersedia\n\n')
@@ -170,7 +170,7 @@ attack :-
                 format('Player ~w\n', [AttackedOwner]),
                 rollAttackDice(0, AttackedTroopsNumber, DefenderRisk, Sum2),
                 format('Total: ~w\n\n', [Sum2]),
-                ((Sum1 > Sum2) (
+                ((Sum1 > Sum2) -> (
                     format('Player ~w menang! Wilayah ~w sekarang dikuasai Oleh Player ~w.\n\n', [CurrName, AttackedArea, CurrName]),
                     readStayingTroops(SoldierToAttack, AttackedArea, ResSol),
                     NewX is TroopsNumber - ResSol,
