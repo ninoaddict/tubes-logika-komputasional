@@ -40,16 +40,18 @@ getElementNeighbouringArea([H|T], Owner, Idx, Elmt) :-
         )) 
     )),!.
 
-printNeighbouringArea([], _, _).
-printNeighbouringArea([H|T], X, Owner) :-
+printNeighbouringArea([], _, _, _).
+printNeighbouringArea([H|T], X, Owner, SoldierToAttack) :-
     (ownedTerritory(H, Owner, _) -> 
     (
-        printNeighbouringArea(T, X, Owner)
+        printNeighbouringArea(T, X, Owner, SoldierToAttack)
     );
     (
-        format('~w. ~w', [X, H]), nl,
+        ownedTerritory(H, _, _AttackedSoldier),
+        winningChance(SoldierToAttack, _AttackedSoldier, R),
+        write(X), write('. '), write(H), write(' ('), write(R), write('%win chance)'), nl,
         _X is X + 1,
-        printNeighbouringArea(T, _X, Owner)
+        printNeighbouringArea(T, _X, Owner, SoldierToAttack)
     )),!.
 
 neighbouringAreaLength([], _, X) :- X is 0, !.
@@ -179,7 +181,7 @@ attack :-
                 );
                 (
                     write('Pilihlah daerah yang ingin Anda serang.\n'),
-                    printNeighbouringArea(NeighbouringArea, 1, CurrName),
+                    printNeighbouringArea(NeighbouringArea, 1, CurrName, SoldierToAttack),
                     nl, 
                     readAttackedArea(Len, NeighbouringArea, CurrName, AttackedArea),
                     ownedTerritory(AttackedArea, AttackedOwner, AttackedTroopsNumber),
