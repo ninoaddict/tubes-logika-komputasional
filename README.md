@@ -1,7 +1,7 @@
 <br />
 <div align="center">
 
-  <h1 align="center">Tugas Besar IF2110 Algoritma & Struktur Data ITB</h1>
+  <h1 align="center">Tugas Besar IF2121 Logika Komputasional</h1>
 
   <p align="center">
     <h3> Global Conquest: Battle for Supremacy </h3>
